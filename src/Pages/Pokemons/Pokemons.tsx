@@ -3,8 +3,8 @@ import { Heading } from "../../Components/heading";
 
 const Pokemons: FC = () => {
   return (
-    <div>
-      <Heading size="2xl">Lets Catch Pokemon...</Heading>
+    <div className="flex justify-center mt-6">
+      <Heading>Lets Catch Pokemon...</Heading>
     </div>
   );
 };
