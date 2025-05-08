@@ -1,7 +1,11 @@
 import type { FC, PropsWithChildren } from "react";
 
-const Heading: FC<PropsWithChildren> = ({ children }) => {
-  return <h1 className="text-2xl font-semibold">{children}</h1>;
+interface HeadingProps {
+  size: string;
+}
+
+const Heading: FC<PropsWithChildren<HeadingProps>> = ({ children, size }) => {
+  return <h1 className={`text-${size} font-semibold`}>{children}</h1>;
 };
 
 export { Heading };
