@@ -1,7 +1,8 @@
 import type { FC } from "react";
+import { PokemonCardContainer } from "../../Components/PokemonCardContainer";
 
 const Home: FC = () => {
-  return <p>Здесь будет контент</p>;
+  return <PokemonCardContainer />;
 };
 
 export { Home };
