@@ -1,7 +1,7 @@
 import type { FC } from "react";
 import { NavItem } from "./Components/NavItem";
 import { useContext } from "react";
-import { globalContext } from "../App/App";
+import { globalContext } from "../../App/App";
 
 const Header: FC = () => {
   const context = useContext(globalContext);
