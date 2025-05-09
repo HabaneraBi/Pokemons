@@ -1,4 +1,4 @@
-import { PokemonCard, type IPokemon } from "./PokemonCard";
+import { PokemonCard, type IPokemon } from "./HomePokemonCard/HomePokemonCard";
 import "../index.css";
 
 const testers: IPokemon[] = [
@@ -21,6 +21,15 @@ const testers: IPokemon[] = [
       "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/188.svg",
   },
   {
+    name: "Rick",
+    type: ["dancer"],
+    height: 175,
+    weight: 65,
+    speed: 15,
+    picture:
+      "https://media4.giphy.com/media/ZE5DmCqNMr3yDXq1Zu/giphy.gif?cid=6c09b952znrd6stiv6732y5qf0oktg3ezab7thmqy3gv8bk3&ep=v1_internal_gif_by_id&rid=giphy.gif&ct=s",
+  },
+  {
     name: "dragonair",
     type: ["dragon"],
     height: 40,
@@ -37,6 +46,7 @@ const PokemonCardContainer = () => {
       <PokemonCard {...testers[0]} />
       <PokemonCard {...testers[1]} />
       <PokemonCard {...testers[2]} />
+      <PokemonCard {...testers[3]} />
     </div>
   );
 };
