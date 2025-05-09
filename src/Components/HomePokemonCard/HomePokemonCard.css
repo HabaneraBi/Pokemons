@@ -1,0 +1,12 @@
+.flip {
+  animation: rotate-180 0.5s forwards;
+}
+
+@keyframes rotate-180 {
+  from {
+    transform: rotateY(-180deg);
+  }
+  to {
+    transform: rotateY(0deg);
+  }
+}
