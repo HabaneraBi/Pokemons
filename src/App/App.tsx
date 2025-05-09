@@ -6,13 +6,12 @@ import { Pokemons } from "../Pages/Pokemons/Pokemons";
 import { Home } from "../Pages/Home/Home";
 
 const globalContext = createContext<GlobalContext>({
-  openTab: "home",
+  openTab: "pokemons",
   setOpenTab: () => "",
 });
 
 const App: FC = () => {
-  console.log("rerender");
-  const [openTab, setOpenTab] = useState<"home" | "pokemons">("home");
+  const [openTab, setOpenTab] = useState<"home" | "pokemons">("pokemons");
 
   return (
     <globalContext.Provider value={{ openTab, setOpenTab }}>

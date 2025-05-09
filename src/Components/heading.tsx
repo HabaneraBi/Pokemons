@@ -5,7 +5,7 @@ interface HeadingProps {
 }
 
 const Heading: FC<PropsWithChildren<HeadingProps>> = ({ children, size }) => {
-  return <h1 className={`text-${size} font-semibold`}>{children}</h1>;
+  return <h1 className={`${size} font-semibold`}>{children}</h1>;
 };
 
 export { Heading };
