@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import { Heading } from "../../Components/heading";
+import { Heading } from "../../Components/Heading";
 
 const Pokemons: FC = () => {
   return (
