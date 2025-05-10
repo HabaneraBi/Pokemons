@@ -12,7 +12,6 @@ const NavItem: FC<PropsWithChildren<NavItemProps>> = ({
 }) => {
   return (
     <li
-      // style={{border: }}
       onClick={clickChangeTab}
       className={`text-xl ${
         isActive && "text-[#3478ff]"
