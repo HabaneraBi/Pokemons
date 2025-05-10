@@ -5,7 +5,7 @@ import { ListPokemons } from "../../Modules/ListPokemons/ListPokemons";
 const Pokemons: FC = () => {
   return (
     <div className="flex flex-col items-center mt-6">
-      <Heading size="text-2xl">Lets Catch Pokemon...</Heading>
+      <Heading className="text-2xl">Lets Catch Pokemon...</Heading>
       <ListPokemons />
     </div>
   );
