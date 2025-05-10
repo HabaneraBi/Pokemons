@@ -11,7 +11,7 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({
 }) => {
   return (
     <button
-      className={`${width} ${padding} cursor-pointer text-center text-lg text-white bg-[#24282b] rounded-md transition-colors duration-150 ease-in hover:bg-[#343638] active:bg-[#181b1d] active:transition-none`}
+      className={`${width} ${padding} cursor-pointer text-center text-white bg-[#24282b] rounded-md transition-colors duration-150 ease-in hover:bg-[#343638] active:bg-[#181b1d] active:transition-none`}
     >
       {children}
     </button>
