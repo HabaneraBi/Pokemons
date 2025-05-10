@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import type { FullPokemonInfo } from "../types";
+import type { FullPokemonInfo } from "../../../UI/types/types";
 import { Heading } from "../../../Components/heading";
 import { Paragraph } from "../../../Components/Paragraph";
 import { Button } from "../../../Components/Button";
@@ -20,10 +20,10 @@ const CardPokemon: FC<FullPokemonInfo> = (pokemon) => {
         <p>Speed: {pokemon.speed}</p>
       </div>
       <div className="flex justify-between w-9/10">
-        <Button padding="p-2" width="w-9/20">
+        <Button padding="p-1" width="w-9/20">
           CATCH POKEMON
         </Button>
-        <Button padding="p-2" width="w-9/20">
+        <Button padding="p-1" width="w-9/20">
           MORE DETAILS
         </Button>
       </div>

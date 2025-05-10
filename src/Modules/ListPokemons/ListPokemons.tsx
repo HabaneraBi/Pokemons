@@ -1,10 +1,10 @@
 import type { FC } from "react";
 import { getFullPokemonsInfo } from "./api/getFullPokemons";
 import { useState, useEffect } from "react";
-import type { FullPokemonInfo } from "./types";
+import type { FullPokemonInfo } from "../../UI/types/types";
 import { CardPokemon } from "./components/CardPokemon";
 
-const ListAllPokemons: FC = () => {
+const ListPokemons: FC = () => {
   const [allPokemons, setAllPokemons] = useState<FullPokemonInfo[]>([]);
   useEffect(() => {
     if (localStorage.getItem("mainInfoForCard")) {
@@ -28,4 +28,4 @@ const ListAllPokemons: FC = () => {
   );
 };
 
-export { ListAllPokemons };
+export { ListPokemons };

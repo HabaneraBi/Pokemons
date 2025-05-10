@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { ShortPokemonInfo, FullPokemonInfo } from "../types";
+import type { FullPokemonInfo } from "../../../UI/types/types";
 
 interface TypeForFullInfo {
   types: { type: { name: string } }[];
@@ -7,6 +7,11 @@ interface TypeForFullInfo {
   height: number;
   weight: number;
   stats: { base_stat: number }[];
+}
+
+interface ShortPokemonInfo {
+  name: string;
+  url: string;
 }
 
 async function getShortPokemonsInfo(): Promise<ShortPokemonInfo[]> {

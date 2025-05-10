@@ -7,9 +7,4 @@ interface FullPokemonInfo {
   speed: number;
 }
 
-interface ShortPokemonInfo {
-  name: string;
-  url: string;
-}
-
-export type { FullPokemonInfo, ShortPokemonInfo };
+export type { FullPokemonInfo };

@@ -1,7 +1,7 @@
 import type { FC } from "react";
 
-const Home: FC = () => {
+const HomePage: FC = () => {
   return <p>Здесь будет контент</p>;
 };
 
-export { Home };
+export { HomePage };
