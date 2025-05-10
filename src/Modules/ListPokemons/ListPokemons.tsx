@@ -3,6 +3,7 @@ import { getFullPokemonsInfo } from "./api/getFullPokemons";
 import { useState, useEffect } from "react";
 import type { FullPokemonInfo } from "./types";
 import { CardPokemon } from "./components/CardPokemon";
+import { all } from "axios";
 
 const ListAllPokemons: FC = () => {
   const [allPokemons, setAllPokemons] = useState<FullPokemonInfo[]>([]);
@@ -11,8 +12,9 @@ const ListAllPokemons: FC = () => {
       setAllPokemons(JSON.parse(localStorage.getItem("mainInfoForCard")!));
     } else {
       async function loading() {
-        setAllPokemons(await getFullPokemonsInfo());
-        localStorage.setItem("mainInfoForCard", JSON.stringify(allPokemons));
+        const pokemons = await getFullPokemonsInfo();
+        setAllPokemons(pokemons);
+        localStorage.setItem("mainInfoForCard", JSON.stringify(pokemons));
       }
       loading();
     }
