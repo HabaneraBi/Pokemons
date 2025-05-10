@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import { Heading } from "../../Components/Heading";
+import { Heading } from "../../Components/heading";
 import { ListAllPokemons } from "../../Modules/ListPokemons/ListPokemons";
 
 const Pokemons: FC = () => {
