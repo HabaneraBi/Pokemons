@@ -1,6 +1,7 @@
 import type { FC } from "react";
 import { HomePokemonCard } from "./Components/HomePokemonCard";
 import type { FullPokemonInfo } from "../../Modules/ListPokemons/types";
+import "../../index.css";
 
 const tester1: FullPokemonInfo = {
   name: "bulbasaur",
@@ -24,7 +25,7 @@ const tester2: FullPokemonInfo = {
 
 const Home: FC = () => {
   return (
-    <div>
+    <div className="p-2.5 ">
       <HomePokemonCard {...tester1} />
       <HomePokemonCard {...tester2} />
     </div>
