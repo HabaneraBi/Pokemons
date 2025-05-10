@@ -11,8 +11,9 @@ const ListAllPokemons: FC = () => {
       setAllPokemons(JSON.parse(localStorage.getItem("mainInfoForCard")!));
     } else {
       async function loading() {
-        setAllPokemons(await getFullPokemonsInfo());
-        localStorage.setItem("mainInfoForCard", JSON.stringify(allPokemons));
+        const info = await getFullPokemonsInfo();
+        setAllPokemons(info);
+        localStorage.setItem("mainInfoForCard", JSON.stringify(info));
       }
       loading();
     }
