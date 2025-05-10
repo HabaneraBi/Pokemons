@@ -4,7 +4,7 @@ import { Heading } from "../../Components/heading";
 const Pokemons: FC = () => {
   return (
     <div>
-      <Heading>Lets Catch Pokemon...</Heading>
+      <Heading size="2xl">Lets Catch Pokemon...</Heading>
     </div>
   );
 };
