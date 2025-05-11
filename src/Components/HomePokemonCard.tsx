@@ -7,20 +7,16 @@ import "../index.css";
 const HomePokemonCard = (pokemon: FullPokemonInfo) => {
   return (
     <div
-      className="flex flex-col w-full p-3 h-100 justify-around scale-100 transition-transform duration-75 ease-in items-center bg-[#E6E6E6] rounded-2xl hover:scale-102
-    sm:grid grid-cols-[0.5fr_2fr_0.5fr] sm:justify-between sm:px-6 sm:h-auto
+      className="flex flex-col gap-4 w-full p-3 justify-around scale-100 transition-transform duration-75 ease-in items-center bg-[#E6E6E6] rounded-2xl hover:scale-102
+    sm:grid sm:gap-0 grid-cols-[0.5fr_2fr_0.5fr] sm:justify-between sm:px-6 sm:h-auto
     lg:grid-cols-[0.5fr_1fr_1fr_0.5fr_1fr]"
     >
-      <div
-        className="w-40 grid items-center
-      sm:h-full sm:w-auto"
-      >
-        <img
-          className="w-auto h-auto"
-          src={pokemon.imageUrl}
-          alt={`image - ${pokemon.name}`}
-        />
-      </div>
+      <img
+        className="w-40 h-auto max-w-full
+        sm:w-full"
+        src={pokemon.imageUrl}
+        alt={`image - ${pokemon.name}`}
+      />
 
       <div
         className="flex flex-col items-center gap-4 w-full
