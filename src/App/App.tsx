@@ -3,7 +3,7 @@ import type { GlobalContext } from "./types";
 import { Header } from "../Modules/Header/Header";
 import { useState, createContext, useEffect } from "react";
 import { Pokemons } from "../Pages/Pokemons/Pokemons";
-import { Home } from "../Pages/Home/Home";
+import { Home } from "../Pages/HomePage/Home";
 
 const globalContext = createContext<GlobalContext>({
   openTab: "pokemons",
