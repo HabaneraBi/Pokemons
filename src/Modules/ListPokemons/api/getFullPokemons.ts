@@ -3,7 +3,13 @@ import type { FullPokemonInfo } from "../../../UI/types/types";
 
 interface TypeForFullInfo {
   types: { type: { name: string } }[];
-  sprites: { other: { dream_world: { front_default: string } } };
+  sprites: {
+    front_default: string;
+    other: {
+      dream_world: { front_default: string };
+      home: { front_default: string };
+    };
+  };
   height: number;
   weight: number;
   stats: { base_stat: number }[];
@@ -12,78 +18,49 @@ interface TypeForFullInfo {
 interface ShortPokemonInfo {
   name: string;
   url: string;
+  count: number;
 }
 
-async function getShortPokemonsInfo(): Promise<ShortPokemonInfo[]> {
-  const requestShort = await axios.get("https://pokeapi.co/api/v2/pokemon");
+async function getCountAllPokemons(): Promise<number> {
+  const responseCount = await axios.get("https://pokeapi.co/api/v2/pokemon/");
+  return responseCount.data.count;
+}
+
+async function getShortPokemonsInfo(
+  offset: number
+): Promise<ShortPokemonInfo[]> {
+  const requestShort = await axios.get(
+    `https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=20`
+  );
   return requestShort.data.results;
 }
 
-export async function getFullPokemonsInfo(): Promise<FullPokemonInfo[]> {
-  const shortPokemonsInfo = await getShortPokemonsInfo();
+export async function getFullPokemonsInfo(
+  offset: number
+): Promise<[number, ...FullPokemonInfo[]]> {
+  const shortPokemonsInfo = await getShortPokemonsInfo(offset);
+  const count = await getCountAllPokemons();
 
   const fullPokemonsInfo: FullPokemonInfo[] = await Promise.all(
     shortPokemonsInfo.map(async (pokemon) => {
       const requsetForFullInfo = await axios.get(pokemon.url);
       const fullInfo: TypeForFullInfo = requsetForFullInfo.data;
 
+      const imageUrl =
+        fullInfo.sprites.other.dream_world.front_default ??
+        fullInfo.sprites.front_default ??
+        fullInfo.sprites.other.home.front_default ??
+        "Увы, изображения нету :(";
+
       return {
         name: pokemon.name,
         abilities: fullInfo.types.map((type) => type.type.name),
-        imageUrl: fullInfo.sprites.other.dream_world.front_default,
+        imageUrl: imageUrl,
         height: fullInfo.height,
         weight: fullInfo.weight,
         speed: fullInfo.stats[5].base_stat,
       };
     })
   );
-  return fullPokemonsInfo;
+  return [count, ...fullPokemonsInfo];
 }
-
-// export async function getAllPokemons() {
-//   try {
-//     let pokemonsInfo: PokemonInfo[] = [];
-
-//     const requestCommon = await axios.get("https://pokeapi.co/api/v2/pokemon");
-//     const commonDataPokemons: PokemonInfo[] = requestCommon.data.results;
-
-//     const allDataPokemons: PokemonInfo[] = await Promise.all(
-//       commonDataPokemons.map(async (pokemon) => {
-//         try {
-//           const requestOther = await axios.get(pokemon.url);
-//           const otherData = requestOther.data;
-//           const forMap: string[] = otherData.types.map((type: typeAbil) => {
-//             return type.type.name;
-//           });
-
-//           const otherDataProps: {
-//             abilities: string[];
-//             imageUrl: string;
-//             height: number;
-//             weight: number;
-//             speed: number;
-//           } = {
-//             abilities: forMap,
-//             imageUrl: otherData.sprites.other.dream_world.front_default,
-//             height: otherData.height,
-//             weight: otherData.weight,
-//             speed: otherData.stats[5].base_stat,
-//           };
-
-//           return {
-//             ...pokemon,
-//             ...otherDataProps,
-//           };
-//         } catch (e) {
-//           console.log(`Error with - ${pokemon.name} - ${e}`);
-//           return Promise.reject();
-//         }
-//       })
-//     );
-//     pokemonsInfo = [...allDataPokemons];
-//     return pokemonsInfo;
-//   } catch (e) {
-//     console.log(e);
-
-//   }
-// }
