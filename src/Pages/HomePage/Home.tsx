@@ -55,7 +55,11 @@ const tester5: FullPokemonInfo = {
 
 const Home: FC = () => {
   return (
-    <div className="p-8 grid grid-cols-1 gap-6">
+    <div
+      className="p-8 grid grid-cols-1 gap-6
+    lg:px-16
+    xl:px-20"
+    >
       <HomePokemonCard {...tester1} />
       <HomePokemonCard {...tester2} />
       <HomePokemonCard {...tester3} />

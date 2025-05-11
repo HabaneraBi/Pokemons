@@ -7,12 +7,13 @@ import "../index.css";
 const HomePokemonCard = (pokemon: FullPokemonInfo) => {
   return (
     <div
-      className="flex flex-col w-full py-3 h-100 justify-around scale-100 transition-transform duration-75 ease-in items-center bg-[#E6E6E6] rounded-2xl hover:scale-102
-    sm:grid grid-cols-[1fr_2fr_0.9fr_0.1fr] sm:justify-between sm:p-6 sm:h-auto"
+      className="flex flex-col w-full p-3 h-100 justify-around scale-100 transition-transform duration-75 ease-in items-center bg-[#E6E6E6] rounded-2xl hover:scale-102
+    sm:grid grid-cols-[0.5fr_2fr_0.5fr] sm:justify-between sm:px-6 sm:h-auto
+    lg:grid-cols-[0.5fr_1fr_1fr_0.5fr_1fr]"
     >
       <div
-        className="w-40
-      sm:w-35"
+        className="w-40 grid items-center
+      sm:h-full sm:w-auto"
       >
         <img
           className="w-auto h-auto"
@@ -22,28 +23,56 @@ const HomePokemonCard = (pokemon: FullPokemonInfo) => {
       </div>
 
       <div
-        className="flex flex-col items-center
-      sm:gap-2 sm:justify-center"
+        className="flex flex-col items-center gap-4 w-full
+      sm:gap-2 sm:justify-center lg:hidden"
       >
         <Heading size="text-2xl">{pokemon.name}</Heading>
-        <Paragraph width="w-auto px-6">
+        <Paragraph width="w-3/4 px-6">
+          {pokemon.abilities?.join(", ")}
+        </Paragraph>
+        <div
+          className="flex justify-around w-full
+        sm:justify-evenly"
+        >
+          <p>Height: {pokemon.height}</p>
+          <p>Weight: {pokemon.weight}</p>
+          <p>Speed: {pokemon.speed}</p>
+        </div>
+      </div>
+
+      <div
+        className="hidden lg:flex lg:flex-row lg:items-center lg:w-full
+      lg:gap-2 lg:justify-normal lg:px-10"
+      >
+        <Heading size="text-2xl xl:text-3xl 2xl:text-4xl">
+          {pokemon.name}
+        </Heading>
+      </div>
+
+      <div className="hidden lg:flex lg:flex-row lg:justify-center">
+        <Paragraph
+          width="w-3/4 px-6 lg:text-xl xl:text-2xl
+        2xl:text-3xl"
+        >
           {pokemon.abilities?.join(", ")}
         </Paragraph>
       </div>
 
       <div
-        className="flex justify-around w-9/10
-      sm:flex-col sm:w-auto"
+        className="hidden lg:text-lg lg:flex lg:flex-col lg:w-full lg:p-0 lg:gap-2
+        xl:text-xl xl:gap-4
+        2xl:text-2xl 2xl:gap-5"
       >
         <p>Height: {pokemon.height}</p>
         <p>Weight: {pokemon.weight}</p>
         <p>Speed: {pokemon.speed}</p>
       </div>
+
       <div
         className="flex w-full px-10 justify-center
-      sm:px-0 sm:w-auto"
+      sm:px-0 sm:w-auto lg:justify-end"
       >
-        <Button padding="p-2" width="w-60 sm:w-30">
+        <Button width="w-60 p-2 sm:w-30 lg:w-2/3 xl:text-xl 2xl:text-2xl">
           Remove
         </Button>
       </div>
