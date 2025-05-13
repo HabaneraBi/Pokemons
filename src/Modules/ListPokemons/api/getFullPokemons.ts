@@ -49,7 +49,7 @@ export async function getFullPokemonsInfo(
         fullInfo.sprites.other.dream_world.front_default ??
         fullInfo.sprites.front_default ??
         fullInfo.sprites.other.home.front_default ??
-        "Увы, изображения нету :(";
+        "No picture :(";
 
       return {
         name: pokemon.name,
