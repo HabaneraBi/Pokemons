@@ -88,7 +88,7 @@ const PokemonsTestPage = () => {
 
       if (
         window.innerHeight + window.scrollY >=
-        document.body.offsetHeight - 100
+        document.body.offsetHeight - 200
       ) {
         loadPokemons();
       }
@@ -98,7 +98,7 @@ const PokemonsTestPage = () => {
     // loadPokemons();
 
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [scrollPosistion]);
 
   return (
     <div className="mx-auto grid grid-cols-1 gap-4 p-4 w-fit">
