@@ -3,6 +3,7 @@ import { HomePokemonCard } from "../../Components/HomePokemonCard";
 import type { FullPokemonInfo } from "../../Modules/ListPokemons/types";
 import "../../index.css";
 
+// const testers: FullPokemonInfo[] = [
 //   {
 //     name: "bulbasaur",
 //     height: 7,

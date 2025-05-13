@@ -4,6 +4,7 @@ import { Header } from "../Modules/Header/Header";
 import { useState, createContext, useEffect } from "react";
 import { Pokemons } from "../Pages/Pokemons/Pokemons";
 import { Home } from "../Pages/HomePage/Home";
+import { PokemonsTestPage } from "../Pages/PokemonsTestPage/PokemonsTestPage";
 
 const globalContext = createContext<GlobalContext>({
   openTab: "pokemons",
@@ -36,7 +37,11 @@ const App: FC = () => {
   return (
     <globalContext.Provider value={{ openTab, setOpenTab }}>
       <Header />
-      {openTab === "pokemons" ? <Pokemons /> : <Home keyStorage="homeCards" />}
+      {openTab === "pokemons" ? (
+        <PokemonsTestPage />
+      ) : (
+        <Home keyStorage="homeCards" />
+      )}
     </globalContext.Provider>
   );
 };
