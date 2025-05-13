@@ -60,36 +60,49 @@ const LOCAL_POKEMONS_KEY: string = "pokemonsTest";
 // localStorage.setItem(LOCAL_POKEMONS_KEY, JSON.stringify(testers));
 
 const PokemonsTestPage = () => {
-  const [localPokemonCards, setLocalPokemonCards] = useState(
+  const [scrollPosistion, setScrollPosition] = useState(0);
+  const [localPokemons, setLocalPokemons] = useState(
     getLocalPokemonCards(LOCAL_POKEMONS_KEY)
   );
 
-  useEffect(() => {
-    const loadPokemons = async () => {
-      const localPokemons: FullPokemonInfo[] =
-        getLocalPokemonCards(LOCAL_POKEMONS_KEY);
+  const loadPokemons = async () => {
+    const pokemonLinks = await getPokemonLinks(localPokemons.length).then(
+      (response) => response.data.results
+    );
 
-      const pokemonLinks = await getPokemonLinks(0).then(
-        (response) => response.data.results
-      );
+    const newPokemonList: FullPokemonInfo[] = localPokemons
+      .slice()
+      .concat(await getPokemonsList(pokemonLinks));
 
-      const newPokemonList: FullPokemonInfo[] = (
-        await getPokemonsList(pokemonLinks)
-      ).concat(localPokemons);
+    sessionStorage.setItem(LOCAL_POKEMONS_KEY, JSON.stringify(newPokemonList));
+    setLocalPokemons(newPokemonList);
+  };
 
-      // console.log(newPokemonList);
-
-      sessionStorage.setItem(
-        LOCAL_POKEMONS_KEY,
-        JSON.stringify(newPokemonList)
-      );
-    };
+  if (localPokemons.length === 0) {
     loadPokemons();
+  }
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollPosition(window.scrollY);
+
+      if (
+        window.innerHeight + window.scrollY >=
+        document.body.offsetHeight - 100
+      ) {
+        loadPokemons();
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    // loadPokemons();
+
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
     <div className="mx-auto grid grid-cols-1 gap-4 p-4 w-fit">
-      {localPokemonCards.map((pokemon, index) => (
+      {localPokemons.map((pokemon, index) => (
         <HomePokemonCard key={index} {...pokemon} />
       ))}
     </div>
