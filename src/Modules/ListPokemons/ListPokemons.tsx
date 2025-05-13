@@ -1,28 +1,52 @@
 import type { FC } from "react";
-import { getFullPokemonsInfo } from "./api/getFullPokemons";
+import {
+  getFullPokemonsInfo,
+  getCountAllPokemons,
+} from "./api/getFullPokemons";
 import { useState, useEffect, useCallback } from "react";
 import type { FullPokemonInfo } from "../../UI/types/types";
 import { CardPokemon } from "./components/CardPokemon";
 
 const ListPokemons: FC = () => {
   const [allPokemons, setAllPokemons] = useState<FullPokemonInfo[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [offset, setOffset] = useState(0);
   const [stopCount, setStopCount] = useState(0);
+
+  useEffect(() => {
+    getCountAllPokemons().then((count) => setStopCount(count));
+    if (sessionStorage.getItem("mainInfoForCard")) {
+      setAllPokemons(JSON.parse(sessionStorage.getItem("mainInfoForCard")!));
+      setOffset(JSON.parse(sessionStorage.getItem("offset")!));
+      setLoading(false);
+    } else {
+      setLoading(true);
+    }
+  }, []);
 
   useEffect(() => {
     if (loading) {
       getFullPokemonsInfo(offset)
         .then((data) => {
-          setStopCount(data[0]);
           const fullPokemonInfo: FullPokemonInfo[] = data.slice(
             1
           ) as FullPokemonInfo[];
           setAllPokemons([...allPokemons, ...fullPokemonInfo]);
-          setOffset((prev) => prev + 20);
+
+          setOffset((prev) => {
+            sessionStorage.setItem("offset", JSON.stringify(prev + 20));
+            return prev + 20;
+          });
+
+          sessionStorage.setItem(
+            "mainInfoForCard",
+            JSON.stringify([...allPokemons, ...fullPokemonInfo])
+          );
         })
         .catch((e) => console.log(e))
-        .finally(() => setLoading(false));
+        .finally(() => {
+          setLoading(false);
+        });
     }
   }, [loading]);
 
@@ -43,19 +67,6 @@ const ListPokemons: FC = () => {
       setLoading(true);
     }
   }, [allPokemons, stopCount, loading]);
-
-  // useEffect(() => {
-  //   if (localStorage.getItem("mainInfoForCard")) {
-  //     setAllPokemons(JSON.parse(localStorage.getItem("mainInfoForCard")!));
-  //   } else {
-  //     async function loading() {
-  //       const info = await getFullPokemonsInfo();
-  //       setAllPokemons(info);
-  //       localStorage.setItem("mainInfoForCard", JSON.stringify(info));
-  //     }
-  //     loading();
-  //   }
-  // }, []);
 
   return (
     <div className="w-4/5 grid grid-cols-1 my-5 gap-y-6 sm:grid-cols-2 sm:w-9/10 sm:gap-x-4 lg:grid-cols-3 2xl:grid-cols-4">

@@ -21,9 +21,9 @@ interface ShortPokemonInfo {
   count: number;
 }
 
-async function getCountAllPokemons(): Promise<number> {
+export async function getCountAllPokemons(): Promise<number> {
   const responseCount = await axios.get("https://pokeapi.co/api/v2/pokemon/");
-  return responseCount.data.count;
+  return responseCount.data.count as number;
 }
 
 async function getShortPokemonsInfo(
@@ -37,9 +37,8 @@ async function getShortPokemonsInfo(
 
 export async function getFullPokemonsInfo(
   offset: number
-): Promise<[number, ...FullPokemonInfo[]]> {
+): Promise<FullPokemonInfo[]> {
   const shortPokemonsInfo = await getShortPokemonsInfo(offset);
-  const count = await getCountAllPokemons();
 
   const fullPokemonsInfo: FullPokemonInfo[] = await Promise.all(
     shortPokemonsInfo.map(async (pokemon) => {
@@ -62,5 +61,5 @@ export async function getFullPokemonsInfo(
       };
     })
   );
-  return [count, ...fullPokemonsInfo];
+  return fullPokemonsInfo;
 }

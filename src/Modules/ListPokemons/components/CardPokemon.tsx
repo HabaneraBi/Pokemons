@@ -7,8 +7,8 @@ import { Button } from "../../../Components/Button";
 const CardPokemon: FC<FullPokemonInfo> = (pokemon) => {
   return (
     <div className="flex flex-col w-full py-3 h-100 justify-around scale-100 transition-transform duration-75 ease-in items-center bg-[#E6E6E6] rounded-2xl hover:scale-102">
-      {pokemon.imageUrl === "Увы, изображения нету :(" ? (
-        <p className="text-xl">Увы, изображения нету :{`(`}</p>
+      {pokemon.imageUrl === "No picture :(" ? (
+        <p className="text-xl">No picture :{`(`}</p>
       ) : (
         <img
           className="w-40 h-2/5"
