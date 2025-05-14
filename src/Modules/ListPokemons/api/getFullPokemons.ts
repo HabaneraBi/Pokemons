@@ -1,6 +1,12 @@
 import axios from "axios";
 import type { FullPokemonInfo } from "../../../UI/types/types";
 
+interface TypeForModalInfo {
+  base_experience: number;
+  stats: { base_stat: number }[];
+  moves: { move: { name: string } }[];
+}
+
 interface TypeForFullInfo {
   types: { type: { name: string } }[];
   sprites: {
@@ -62,4 +68,16 @@ export async function getFullPokemonsInfo(
     })
   );
   return fullPokemonsInfo;
+}
+
+export async function getModalInfo(name: string) {
+  const requestModalInfo = await axios.get(
+    `https://pokeapi.co/api/v2/pokemon/${name}`
+  );
+  const pokemon: TypeForModalInfo = requestModalInfo.data;
+  return {
+    experience: pokemon.base_experience,
+    attack: pokemon.stats[1].base_stat,
+    moves: pokemon.moves.map((move) => move.move.name),
+  };
 }

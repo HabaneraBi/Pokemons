@@ -27,11 +27,8 @@ const ListPokemons: FC = () => {
   useEffect(() => {
     if (loading) {
       getFullPokemonsInfo(offset)
-        .then((data) => {
-          const fullPokemonInfo: FullPokemonInfo[] = data.slice(
-            1
-          ) as FullPokemonInfo[];
-          setAllPokemons([...allPokemons, ...fullPokemonInfo]);
+        .then((info) => {
+          setAllPokemons([...allPokemons, ...info]);
 
           setOffset((prev) => {
             sessionStorage.setItem("offset", JSON.stringify(prev + 20));
@@ -40,7 +37,7 @@ const ListPokemons: FC = () => {
 
           sessionStorage.setItem(
             "mainInfoForCard",
-            JSON.stringify([...allPokemons, ...fullPokemonInfo])
+            JSON.stringify([...allPokemons, ...info])
           );
         })
         .catch((e) => console.log(e))

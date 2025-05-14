@@ -7,4 +7,10 @@ interface FullPokemonInfo {
   speed: number;
 }
 
+// interface ModalInfo{
+//   experience: string;
+//   attack: string;
+//   moves: string;
+// }
+
 export type { FullPokemonInfo };
