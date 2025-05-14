@@ -1,14 +1,16 @@
-import { Button } from "./Button";
-import { Paragraph } from "./Paragraph";
-import { Heading } from "./heading";
-import "../index.css";
-import type { FullPokemonInfo } from "../UI/types/types";
+import { Button } from "../../../Components/Button";
+import { Paragraph } from "../../../Components/Paragraph";
+import { Heading } from "../../../Components/Heading";
+import type { MainPokemonInfo } from "../../../UI/types/types";
 
-const HomePokemonCard = (pokemon: FullPokemonInfo) => {
+const HomePokemonCard = (pokemon: MainPokemonInfo) => {
   return (
     <div
-      className="flex flex-col gap-4 w-full p-3 justify-around scale-100 transition-transform duration-75 ease-in items-center bg-[#E6E6E6] rounded-2xl hover:scale-102
-    sm:grid sm:gap-0 grid-cols-[0.5fr_2fr_0.5fr] sm:justify-between sm:px-6 sm:h-auto
+      className="flex flex-col gap-4 w-full p-3 justify-around scale-100 
+      transition-transform duration-75 ease-in items-center bg-[#E6E6E6] 
+      rounded-2xl hover:scale-102
+    sm:grid sm:gap-0 sm:grid-cols-[0.5fr_2fr_0.5fr] sm:justify-between 
+    sm:px-6 sm:h-auto
     lg:grid-cols-[0.5fr_1fr_1fr_0.5fr_1fr]"
     >
       <img

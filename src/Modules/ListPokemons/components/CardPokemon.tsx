@@ -1,27 +1,21 @@
 import { useEffect, useState, type FC } from "react";
-import type { FullPokemonInfo } from "../../../UI/types/types";
-import { Heading } from "../../../Components/heading";
+import type { MainPokemonInfo } from "../../../UI/types/types";
+import { Heading } from "../../../Components/Heading";
 import { Paragraph } from "../../../Components/Paragraph";
 import { Button } from "../../../Components/Button";
 import { createPortal } from "react-dom";
 import { ModalDetailsPokemon } from "./ModalDetailsPokemon";
 // import { getModalInfo } from "../api/getFullPokemons";
 
-const CardPokemon: FC<FullPokemonInfo> = (pokemon) => {
+const CardPokemon: FC<MainPokemonInfo> = (pokemon) => {
   const [catched, setCatched] = useState(false);
   const [openModalDetails, setOpenModalDetails] = useState(false);
-
-  // useEffect(() => {
-  //   if (openModalDetails) {
-  //     getModalInfo(pokemon.name).then((data) => console.log(data));
-  //   }
-  // }, [openModalDetails]);
 
   const getArrFromStorage = () => {
     const arrCatchPokemonsStorage: null | string =
       localStorage.getItem("catchPokemonsInfo");
     if (arrCatchPokemonsStorage) {
-      return JSON.parse(arrCatchPokemonsStorage) as FullPokemonInfo[];
+      return JSON.parse(arrCatchPokemonsStorage) as MainPokemonInfo[];
     }
   };
   useEffect(() => {
@@ -53,7 +47,7 @@ const CardPokemon: FC<FullPokemonInfo> = (pokemon) => {
       setCatched(true);
     } else {
       if (arrCatchPokemons) {
-        const newStorage: [] | FullPokemonInfo[] = arrCatchPokemons.filter(
+        const newStorage: [] | MainPokemonInfo[] = arrCatchPokemons.filter(
           (pokemonStorage) => {
             if (pokemonStorage.name !== pokemon.name) {
               return pokemonStorage;
@@ -102,6 +96,7 @@ const CardPokemon: FC<FullPokemonInfo> = (pokemon) => {
       {openModalDetails
         ? createPortal(
             <ModalDetailsPokemon
+              pokemonInfo={pokemon}
               setOpenModalDetails={setOpenModalDetails}
               openModalDetails={openModalDetails}
             />,

@@ -1,37 +1,14 @@
-import { useEffect, type FC } from "react";
-import { HomePokemonCard } from "../../Components/HomePokemonCard";
-import "../../index.css";
-import type { FullPokemonInfo } from "../../UI/types/types";
+import type { FC } from "react";
+import { Heading } from "../../Components/Heading";
+import { Home } from "../../Modules/Home/Home";
 
-interface HomeProps {
-  keyStorage: string;
-}
-
-const HomePage: FC<HomeProps> = (homeProps: HomeProps) => {
-  const cards: FullPokemonInfo[] = getStorageCards(homeProps.keyStorage);
-
+const HomePage: FC = () => {
   return (
-    <ul
-      className="p-8 grid grid-cols-1 gap-6
-    lg:px-16
-    xl:px-20"
-    >
-      {cards.map((pokemonInfo, index) => (
-        <li key={index}>
-          <HomePokemonCard {...pokemonInfo} />
-        </li>
-      ))}
-    </ul>
+    <div className="flex flex-col items-center mt-6">
+      <Heading className="mt-6 text-2xl">My Pokemons</Heading>
+      <Home />
+    </div>
   );
 };
-
-function getStorageCards(key: string): FullPokemonInfo[] {
-  const cards = localStorage.getItem(key);
-  if (cards) {
-    return JSON.parse(cards);
-  } else {
-    return [];
-  }
-}
 
 export { HomePage };

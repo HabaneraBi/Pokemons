@@ -1,13 +1,13 @@
 import axios from "axios";
-import type { FullPokemonInfo } from "../../../UI/types/types";
+import type { MainPokemonInfo, ModalInfo } from "../../../UI/types/types";
 
-interface TypeForModalInfo {
-  base_experience: number;
-  stats: { base_stat: number }[];
-  moves: { move: { name: string } }[];
+interface InfoFromRequestGroupCards {
+  name: string;
+  url: string;
+  count: number;
 }
 
-interface TypeForFullInfo {
+interface TypeRequestForMainInfo {
   types: { type: { name: string } }[];
   sprites: {
     front_default: string;
@@ -21,10 +21,10 @@ interface TypeForFullInfo {
   stats: { base_stat: number }[];
 }
 
-interface ShortPokemonInfo {
-  name: string;
-  url: string;
-  count: number;
+interface TypeRequestForModal {
+  base_experience: number;
+  stats: { base_stat: number }[];
+  moves: { move: { name: string } }[];
 }
 
 export async function getCountAllPokemons(): Promise<number> {
@@ -34,7 +34,7 @@ export async function getCountAllPokemons(): Promise<number> {
 
 async function getShortPokemonsInfo(
   offset: number
-): Promise<ShortPokemonInfo[]> {
+): Promise<InfoFromRequestGroupCards[]> {
   const requestShort = await axios.get(
     `https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=20`
   );
@@ -43,13 +43,13 @@ async function getShortPokemonsInfo(
 
 export async function getFullPokemonsInfo(
   offset: number
-): Promise<FullPokemonInfo[]> {
+): Promise<MainPokemonInfo[]> {
   const shortPokemonsInfo = await getShortPokemonsInfo(offset);
 
-  const fullPokemonsInfo: FullPokemonInfo[] = await Promise.all(
+  const fullPokemonsInfo: MainPokemonInfo[] = await Promise.all(
     shortPokemonsInfo.map(async (pokemon) => {
       const requsetForFullInfo = await axios.get(pokemon.url);
-      const fullInfo: TypeForFullInfo = requsetForFullInfo.data;
+      const fullInfo: TypeRequestForMainInfo = requsetForFullInfo.data;
 
       const imageUrl =
         fullInfo.sprites.other.dream_world.front_default ??
@@ -70,11 +70,11 @@ export async function getFullPokemonsInfo(
   return fullPokemonsInfo;
 }
 
-export async function getModalInfo(name: string) {
+export async function getModalInfo(name: string): Promise<ModalInfo> {
   const requestModalInfo = await axios.get(
     `https://pokeapi.co/api/v2/pokemon/${name}`
   );
-  const pokemon: TypeForModalInfo = requestModalInfo.data;
+  const pokemon: TypeRequestForModal = requestModalInfo.data;
   return {
     experience: pokemon.base_experience,
     attack: pokemon.stats[1].base_stat,
