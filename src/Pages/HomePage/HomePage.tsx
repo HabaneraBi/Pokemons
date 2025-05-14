@@ -1,7 +1,37 @@
-import type { FC } from "react";
+import { useEffect, type FC } from "react";
+import { HomePokemonCard } from "../../Components/HomePokemonCard";
+import "../../index.css";
+import type { FullPokemonInfo } from "../../UI/types/types";
 
-const HomePage: FC = () => {
-  return <p>Здесь будет контент</p>;
+interface HomeProps {
+  keyStorage: string;
+}
+
+const HomePage: FC<HomeProps> = (homeProps: HomeProps) => {
+  const cards: FullPokemonInfo[] = getStorageCards(homeProps.keyStorage);
+
+  return (
+    <ul
+      className="p-8 grid grid-cols-1 gap-6
+    lg:px-16
+    xl:px-20"
+    >
+      {cards.map((pokemonInfo, index) => (
+        <li key={index}>
+          <HomePokemonCard {...pokemonInfo} />
+        </li>
+      ))}
+    </ul>
+  );
 };
+
+function getStorageCards(key: string): FullPokemonInfo[] {
+  const cards = localStorage.getItem(key);
+  if (cards) {
+    return JSON.parse(cards);
+  } else {
+    return [];
+  }
+}
 
 export { HomePage };

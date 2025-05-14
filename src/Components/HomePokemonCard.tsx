@@ -1,8 +1,8 @@
 import { Button } from "./Button";
 import { Paragraph } from "./Paragraph";
 import { Heading } from "./heading";
-import type { FullPokemonInfo } from "../Modules/ListPokemons/types";
 import "../index.css";
+import type { FullPokemonInfo } from "../UI/types/types";
 
 const HomePokemonCard = (pokemon: FullPokemonInfo) => {
   return (
@@ -22,8 +22,8 @@ const HomePokemonCard = (pokemon: FullPokemonInfo) => {
         className="flex flex-col items-center gap-4 w-full
       sm:gap-2 sm:justify-center lg:hidden"
       >
-        <Heading size="text-2xl">{pokemon.name}</Heading>
-        <Paragraph width="w-3/4 px-6">
+        <Heading className="text-2xl">{pokemon.name}</Heading>
+        <Paragraph className="w-3/4 px-6">
           {pokemon.abilities?.join(", ")}
         </Paragraph>
         <div
@@ -40,14 +40,14 @@ const HomePokemonCard = (pokemon: FullPokemonInfo) => {
         className="hidden lg:flex lg:flex-row lg:items-center lg:w-full
       lg:gap-2 lg:justify-normal lg:px-10"
       >
-        <Heading size="text-2xl xl:text-3xl 2xl:text-4xl">
+        <Heading className="text-2xl xl:text-3xl 2xl:text-4xl">
           {pokemon.name}
         </Heading>
       </div>
 
       <div className="hidden lg:flex lg:flex-row lg:justify-center">
         <Paragraph
-          width="w-3/4 px-6 lg:text-xl xl:text-2xl
+          className="w-3/4 px-6 lg:text-xl xl:text-2xl
         2xl:text-3xl"
         >
           {pokemon.abilities?.join(", ")}
@@ -68,7 +68,7 @@ const HomePokemonCard = (pokemon: FullPokemonInfo) => {
         className="flex w-full px-10 justify-center
       sm:px-0 sm:w-auto lg:justify-end"
       >
-        <Button width="w-60 p-2 sm:w-30 lg:w-2/3 xl:text-xl 2xl:text-2xl">
+        <Button className="w-60 p-2 sm:w-30 lg:w-2/3 xl:text-xl 2xl:text-2xl">
           Remove
         </Button>
       </div>
