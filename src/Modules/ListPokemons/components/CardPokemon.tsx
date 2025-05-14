@@ -1,21 +1,21 @@
-import { useEffect, useRef, useState, type FC } from "react";
+import { useEffect, useState, type FC } from "react";
 import type { FullPokemonInfo } from "../../../UI/types/types";
 import { Heading } from "../../../Components/heading";
 import { Paragraph } from "../../../Components/Paragraph";
 import { Button } from "../../../Components/Button";
 import { createPortal } from "react-dom";
 import { ModalDetailsPokemon } from "./ModalDetailsPokemon";
-import { getModalInfo } from "../api/getFullPokemons";
+// import { getModalInfo } from "../api/getFullPokemons";
 
 const CardPokemon: FC<FullPokemonInfo> = (pokemon) => {
   const [catched, setCatched] = useState(false);
   const [openModalDetails, setOpenModalDetails] = useState(false);
-  const modalDetails = useRef<HTMLDialogElement>(null);
-  useEffect(() => {
-    if (openModalDetails) {
-      getModalInfo(pokemon.name).then((data) => console.log(data));
-    }
-  }, [openModalDetails]);
+
+  // useEffect(() => {
+  //   if (openModalDetails) {
+  //     getModalInfo(pokemon.name).then((data) => console.log(data));
+  //   }
+  // }, [openModalDetails]);
 
   const getArrFromStorage = () => {
     const arrCatchPokemonsStorage: null | string =
@@ -36,7 +36,6 @@ const CardPokemon: FC<FullPokemonInfo> = (pokemon) => {
   }, []);
 
   function openModalHandler() {
-    modalDetails.current?.showModal();
     setOpenModalDetails(true);
   }
 
@@ -100,8 +99,15 @@ const CardPokemon: FC<FullPokemonInfo> = (pokemon) => {
         </div>
       </div>
 
-      {openModalDetails &&
-        createPortal(<ModalDetailsPokemon ref={modalDetails} />, document.body)}
+      {openModalDetails
+        ? createPortal(
+            <ModalDetailsPokemon
+              setOpenModalDetails={setOpenModalDetails}
+              openModalDetails={openModalDetails}
+            />,
+            document.body
+          )
+        : null}
     </>
   );
 };

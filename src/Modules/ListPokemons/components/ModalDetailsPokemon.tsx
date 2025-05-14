@@ -1,14 +1,28 @@
-import { type FC } from "react";
+import { type FC, useEffect, useRef } from "react";
 import { Heading } from "../../../Components/heading";
 import { Button } from "../../../Components/Button";
+import type { Dispatch, SetStateAction } from "react";
+
 interface ModalDetailsPokemonProps {
-  ref: React.RefObject<HTMLDialogElement | null>;
+  setOpenModalDetails: Dispatch<SetStateAction<boolean>>;
+  openModalDetails: boolean;
 }
 
-const ModalDetailsPokemon: FC<ModalDetailsPokemonProps> = ({ ref }) => {
+const ModalDetailsPokemon: FC<ModalDetailsPokemonProps> = ({
+  setOpenModalDetails,
+  openModalDetails,
+}) => {
+  const modalDetails = useRef<HTMLDialogElement>(null);
+
+  useEffect(() => {
+    if (openModalDetails) {
+      modalDetails.current?.showModal();
+    }
+  }, [openModalDetails]);
+
   return (
     <dialog
-      ref={ref}
+      ref={modalDetails}
       className={`w-125 h-8/10 mx-auto top-20 fixed border rounded-2xl`}
     >
       <div>
@@ -24,7 +38,7 @@ const ModalDetailsPokemon: FC<ModalDetailsPokemonProps> = ({ ref }) => {
         <p>Moves:</p>
         <div>
           <Button>CATCH POKEMON</Button>
-          <Button>BACK</Button>
+          <Button onClick={() => setOpenModalDetails(false)}>BACK</Button>
         </div>
       </div>
     </dialog>
