@@ -13,13 +13,9 @@ const Home: FC = () => {
   return (
     <>
       {saveCards.length ? (
-        <ul
-          className="p-8 grid grid-cols-1 gap-6
-    lg:px-16
-    xl:px-20"
-        >
+        <ul className="p-8 grid grid-cols-1 gap-6">
           {saveCards.map((pokemonInfo, index) => (
-            <li key={index}>
+            <li className="lg:px-32" key={index}>
               <HomePokemonCard
                 saveCards={saveCards}
                 setSaveCards={setSaveCards}
