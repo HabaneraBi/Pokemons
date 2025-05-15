@@ -2,8 +2,33 @@ import { Button } from "../../../Components/Button";
 import { Paragraph } from "../../../Components/Paragraph";
 import { Heading } from "../../../Components/Heading";
 import type { MainPokemonInfo } from "../../../UI/types/types";
+import type { FC } from "react";
 
-const HomePokemonCard = (pokemon: MainPokemonInfo) => {
+interface HomePokemonCardProps {
+  pokemon: MainPokemonInfo;
+  saveCards: MainPokemonInfo[];
+  setSaveCards: (arr: MainPokemonInfo[]) => void;
+}
+
+const HomePokemonCard: FC<HomePokemonCardProps> = ({
+  pokemon,
+  saveCards,
+  setSaveCards,
+}) => {
+  const deleteCardHandler = () => {
+    const newSaveCards = saveCards.filter((saveCard) => {
+      if (saveCard.name !== pokemon.name) {
+        return saveCard;
+      }
+    });
+    if (newSaveCards.length) {
+      localStorage.setItem("catchPokemonsInfo", JSON.stringify(newSaveCards));
+    } else {
+      localStorage.removeItem("catchPokemonsInfo");
+    }
+    setSaveCards(newSaveCards);
+  };
+
   return (
     <div
       className="flex flex-col gap-4 w-full p-3 justify-around scale-100 
@@ -70,7 +95,10 @@ const HomePokemonCard = (pokemon: MainPokemonInfo) => {
         className="flex w-full px-10 justify-center
       sm:px-0 sm:w-auto lg:justify-end"
       >
-        <Button className="w-60 p-2 sm:w-30 lg:w-2/3 xl:text-xl 2xl:text-2xl">
+        <Button
+          onClick={deleteCardHandler}
+          className="w-60 p-2 sm:w-30 lg:w-2/3 xl:text-xl 2xl:text-2xl"
+        >
           Remove
         </Button>
       </div>

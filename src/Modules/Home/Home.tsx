@@ -1,15 +1,14 @@
-import { type FC } from "react";
+import { type FC, useEffect, useState } from "react";
 import { HomePokemonCard } from "./components/HomePokemonCard";
 import "../../index.css";
 import type { MainPokemonInfo } from "../../UI/types/types";
 
 const Home: FC = () => {
-  function getStorageCards(): MainPokemonInfo[] {
+  const [saveCards, setSaveCards] = useState<MainPokemonInfo[]>([]);
+  useEffect(() => {
     const cards = localStorage.getItem("catchPokemonsInfo");
-    return cards ? JSON.parse(cards) : [];
-  }
-
-  const saveCards: MainPokemonInfo[] = getStorageCards();
+    setSaveCards(cards ? JSON.parse(cards) : []);
+  }, []);
 
   return (
     <>
@@ -21,7 +20,11 @@ const Home: FC = () => {
         >
           {saveCards.map((pokemonInfo, index) => (
             <li key={index}>
-              <HomePokemonCard {...pokemonInfo} />
+              <HomePokemonCard
+                saveCards={saveCards}
+                setSaveCards={setSaveCards}
+                pokemon={pokemonInfo}
+              />
             </li>
           ))}
         </ul>
