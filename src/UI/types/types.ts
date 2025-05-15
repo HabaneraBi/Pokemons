@@ -1,4 +1,4 @@
-interface FullPokemonInfo {
+interface MainPokemonInfo {
   name: string;
   abilities: string[];
   imageUrl: string;
@@ -7,10 +7,12 @@ interface FullPokemonInfo {
   speed: number;
 }
 
-// interface ModalInfo{
-//   experience: string;
-//   attack: string;
-//   moves: string;
-// }
+interface ModalInfo {
+  experience: number;
+  attack: number;
+  moves: string[];
+}
 
-export type { FullPokemonInfo };
+type AllPokemonInfo = MainPokemonInfo & Partial<ModalInfo>;
+
+export type { MainPokemonInfo, AllPokemonInfo, ModalInfo };
