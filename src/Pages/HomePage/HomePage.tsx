@@ -17,7 +17,7 @@ const HomePage: FC<HomeProps> = (homeProps: HomeProps) => {
     xl:px-20"
     >
       {cards.map((pokemonInfo, index) => (
-        <li key={index}>
+        <li className="lg: px-28" key={index}>
           <HomePokemonCard {...pokemonInfo} />
         </li>
       ))}
