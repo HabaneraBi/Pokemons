@@ -67,15 +67,19 @@ const CardPokemon: FC<MainPokemonInfo> = (pokemon) => {
   return (
     <>
       <div className="flex flex-col w-full py-3 h-100 justify-around scale-100 transition-transform duration-75 ease-in items-center bg-[#E6E6E6] rounded-2xl hover:scale-102">
-        {pokemon.imageUrl === "No picture :(" ? (
+        {/* <p className="text-xl">No picture :{`(`}</p> */}
+        <img
+          className={`${
+            pokemon.imageUrl === "src/UI/icons/pikachu.jpg"
+              ? "w-30 h-3/10 rounded-2xl shadow-md"
+              : "w-40 h-2/5"
+          }`}
+          src={pokemon.imageUrl}
+          alt={`image - ${pokemon.name}`}
+        />
+        {pokemon.imageUrl === "src/UI/icons/pikachu.jpg" ? (
           <p className="text-xl">No picture :{`(`}</p>
-        ) : (
-          <img
-            className="w-40 h-2/5"
-            src={pokemon.imageUrl}
-            alt={`image - ${pokemon.name}`}
-          />
-        )}
+        ) : null}
         <Heading className="text-2xl text-center">{pokemon.name}</Heading>
         <Paragraph className="w-3/4">{pokemon.abilities?.join(", ")}</Paragraph>
         <div className="flex justify-around w-9/10">

@@ -13,9 +13,10 @@ const Home: FC = () => {
   return (
     <>
       {saveCards.length ? (
-        <ul className="p-8 grid grid-cols-1 gap-6">
+        <ul className="p-8 w-full grid grid-cols-1 gap-6 lg:justify-items-center">
           {saveCards.map((pokemonInfo, index) => (
-            <li className="lg:px-32" key={index}>
+            // lg:px-32
+            <li className="lg:w-240 xl:w-290 2xl:w-330" key={index}>
               <HomePokemonCard
                 saveCards={saveCards}
                 setSaveCards={setSaveCards}
