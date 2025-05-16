@@ -6,13 +6,12 @@ import {
 import { useState, useEffect, useCallback, useContext } from "react";
 import type { MainPokemonInfo } from "../../UI/types/types";
 import { CardPokemon } from "./components/CardPokemon";
-import { all } from "axios";
 import { globalContext } from "../../App/App";
 
 const ListPokemons: FC = () => {
   const [allPokemons, setAllPokemons] = useState<MainPokemonInfo[]>([]);
   const [loading, setLoading] = useState(false);
-  const [offset, setOffset] = useState(0); //можно попробовать заменить на ref
+  const [offset, setOffset] = useState(0);
   const [stopCount, setStopCount] = useState(0);
 
   const context = useContext(globalContext);
@@ -33,7 +32,12 @@ const ListPokemons: FC = () => {
   }, []);
 
   useEffect(() => {
-    setAllPokemons(filterPokemons(getStorageInfo(), context.searchText));
+    setAllPokemons(
+      filterPokemons(
+        getStorageCards<MainPokemonInfo>("mainInfoForCard"),
+        context.searchText
+      )
+    );
   }, [context.searchText]);
 
   useEffect(() => {
@@ -51,7 +55,10 @@ const ListPokemons: FC = () => {
 
           sessionStorage.setItem(
             "mainInfoForCard",
-            JSON.stringify([...getStorageInfo(), ...info])
+            JSON.stringify([
+              ...getStorageCards<MainPokemonInfo>("mainInfoForCard"),
+              ...info,
+            ])
           );
         })
         .catch((e) => console.log(e))
@@ -87,11 +94,11 @@ const ListPokemons: FC = () => {
   );
 };
 
-function getStorageInfo(): MainPokemonInfo[] {
-  const storage = JSON.parse(sessionStorage.getItem("mainInfoForCard")!);
+function getStorageCards<T>(key: string): T[] {
+  const storage = JSON.parse(sessionStorage.getItem(key)!);
 
   if (storage) {
-    return storage as MainPokemonInfo[];
+    return storage as T[];
   } else {
     return [];
   }
@@ -108,4 +115,4 @@ function filterPokemons(
   }
 }
 
-export { ListPokemons };
+export { ListPokemons, filterPokemons };

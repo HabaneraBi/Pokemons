@@ -1,15 +1,26 @@
-import { type FC } from "react";
+import { useContext, useEffect, type FC } from "react";
 import { HomePokemonCard } from "./components/HomePokemonCard";
 import "../../index.css";
 import type { MainPokemonInfo } from "../../UI/types/types";
+import { filterPokemons } from "../ListPokemons/ListPokemons";
+import { globalContext } from "../../App/App";
 
 const Home: FC = () => {
+  const context = useContext(globalContext);
+
   function getStorageCards(): MainPokemonInfo[] {
     const cards = localStorage.getItem("catchPokemonsInfo");
     return cards ? JSON.parse(cards) : [];
   }
 
-  const saveCards: MainPokemonInfo[] = getStorageCards();
+  let saveCards: MainPokemonInfo[] = filterPokemons(
+    getStorageCards(),
+    context.searchText
+  );
+
+  useEffect(() => {
+    saveCards = filterPokemons(getStorageCards(), context.searchText);
+  }, [context.searchText]);
 
   return (
     <>
