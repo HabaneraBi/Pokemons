@@ -11,8 +11,6 @@ const CardPokemon: FC<MainPokemonInfo> = memo((pokemon) => {
   const [catched, setCatched] = useState(false);
   const [openModalDetails, setOpenModalDetails] = useState(false);
 
-  console.log("rerender");
-
   useEffect(() => {
     const arrCatchPokemons = getArrFromStorage();
     if (arrCatchPokemons) {

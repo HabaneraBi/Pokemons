@@ -1,6 +1,6 @@
 interface GlobalContext {
   openTab: "home" | "pokemons";
-  setOpenTab: React.Dispatch<React.SetStateAction<"home" | "pokemons">>;
+  setOpenTab: (tab: "home" | "pokemons") => void;
 }
 
 export type { GlobalContext };
