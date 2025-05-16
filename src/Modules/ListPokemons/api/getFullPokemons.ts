@@ -55,8 +55,8 @@ export async function getFullPokemonsInfo(
         fullInfo.sprites.other.dream_world.front_default ??
         fullInfo.sprites.front_default ??
         fullInfo.sprites.other.home.front_default ??
-        "No picture :(";
-
+        "src/UI/icons/pikachu.jpg";
+      // "No picture :("
       return {
         name: pokemon.name,
         abilities: fullInfo.types.map((type) => type.type.name),

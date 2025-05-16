@@ -1,3 +1,4 @@
+import { type FC, useState } from "react";
 import { useContext, useEffect, type FC } from "react";
 import { HomePokemonCard } from "./components/HomePokemonCard";
 import "../../index.css";
@@ -6,11 +7,13 @@ import { filterPokemons } from "../ListPokemons/ListPokemons";
 import { globalContext } from "../../App/App";
 
 const Home: FC = () => {
+  const [saveCards, setSaveCards] = useState<MainPokemonInfo[]>(() => {
   const context = useContext(globalContext);
 
   function getStorageCards(): MainPokemonInfo[] {
     const cards = localStorage.getItem("catchPokemonsInfo");
     return cards ? JSON.parse(cards) : [];
+  });
   }
 
   let saveCards: MainPokemonInfo[] = filterPokemons(
@@ -25,10 +28,14 @@ const Home: FC = () => {
   return (
     <>
       {saveCards.length ? (
-        <ul className="p-8 grid grid-cols-1 gap-6">
+        <ul className="p-8 w-full grid grid-cols-1 gap-6 lg:justify-items-center">
           {saveCards.map((pokemonInfo, index) => (
-            <li className="lg:px-32" key={index}>
-              <HomePokemonCard {...pokemonInfo} />
+            <li className="lg:w-240 xl:w-290 2xl:w-330" key={index}>
+              <HomePokemonCard
+                saveCards={saveCards}
+                setSaveCards={setSaveCards}
+                pokemon={pokemonInfo}
+              />
             </li>
           ))}
         </ul>

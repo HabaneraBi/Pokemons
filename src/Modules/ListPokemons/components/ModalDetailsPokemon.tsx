@@ -4,19 +4,25 @@ import { Button } from "../../../Components/Button";
 import type { Dispatch, SetStateAction } from "react";
 import { getModalInfo } from "../api/getFullPokemons";
 import type { AllPokemonInfo, MainPokemonInfo } from "../../../UI/types/types";
+import { catchPokemonHandler } from "../functions/functions";
 
 interface ModalDetailsPokemonProps {
   setOpenModalDetails: Dispatch<SetStateAction<boolean>>;
   openModalDetails: boolean;
   pokemonInfo: MainPokemonInfo;
+  catched: boolean;
+  setCatched: (catched: boolean) => void;
 }
 
 const ModalDetailsPokemon: FC<ModalDetailsPokemonProps> = ({
   setOpenModalDetails,
   openModalDetails,
   pokemonInfo,
+  catched,
+  setCatched,
 }) => {
   const [modalInfo, setModalInfo] = useState<AllPokemonInfo>(pokemonInfo);
+  console.log("rerender from modal");
 
   useEffect(() => {
     if (openModalDetails) {
@@ -34,14 +40,25 @@ const ModalDetailsPokemon: FC<ModalDetailsPokemonProps> = ({
     }
   }, [openModalDetails]);
 
+  const onKeyHandler: React.KeyboardEventHandler = (e) => {
+    if (e.key === "Escape") {
+      setOpenModalDetails(false);
+    }
+  };
+
   return (
     <dialog
+      onKeyDown={onKeyHandler}
       ref={modalDetails}
       className={`w-17/20 p-5 h-8/10 mx-auto top-30 fixed rounded-2xl flex justify-center 2xl:w-4/5`}
     >
       <div className="size-full flex flex-col justify-between items-center gap-2 xl:flex-row xl:gap-10">
         <img
-          className="w-50 h-75 self-center sm:size-70 xl:size-74"
+          className={`w-50 h-75 self-center sm:size-70 xl:size-74 ${
+            pokemonInfo.imageUrl === "src/UI/icons/pikachu.jpg"
+              ? "rounded-2xl shadow-md"
+              : ""
+          }`}
           src={modalInfo.imageUrl}
         />
         <div className="flex flex-col items-center justify-evenly w-full xl:h-full">
@@ -65,7 +82,14 @@ const ModalDetailsPokemon: FC<ModalDetailsPokemonProps> = ({
           </p>
 
           <div className="flex w-full justify-around mt-4 mb-4 md:mt-8">
-            <Button className="min-h-12 w-23 sm:w-35">CATCH POKEMON</Button>
+            <Button
+              onClick={() =>
+                catchPokemonHandler(catched, pokemonInfo, setCatched)
+              }
+              className="min-h-12 w-23 sm:w-35"
+            >
+              {catched ? "REMOVE POKEMON" : "CATCH POKEMON"}
+            </Button>
             <Button
               className="min-h-12 w-23 sm:w-35"
               onClick={() => setOpenModalDetails(false)}
