@@ -10,12 +10,13 @@ import { globalContext } from "../../App/App";
 
 const ListPokemons: FC = () => {
   const [allPokemons, setAllPokemons] = useState<MainPokemonInfo[]>([]);
-  const [allPokemons, setAllPokemons] = useState<MainPokemonInfo[]>([]);
   const [loading, setLoading] = useState(false);
-  const [offset, setOffset] = useState(0);
   const [stopCount, setStopCount] = useState(0);
 
   const context = useContext(globalContext);
+
+  const localPokemons: MainPokemonInfo[] =
+    getStorageCards<MainPokemonInfo>("mainInfoForCard");
 
   useEffect(() => {
     getCountAllPokemons().then((count) => setStopCount(count));
@@ -24,41 +25,26 @@ const ListPokemons: FC = () => {
         sessionStorage.getItem("mainInfoForCard")!
       );
       setAllPokemons(filterPokemons(localPokemons, context.searchText));
-
-      setOffset(JSON.parse(sessionStorage.getItem("offset")!));
     } else {
       setLoading(true);
     }
   }, []);
 
   useEffect(() => {
-    setAllPokemons(
-      filterPokemons(
-        getStorageCards<MainPokemonInfo>("mainInfoForCard"),
-        context.searchText
-      )
-    );
+    setAllPokemons(filterPokemons(localPokemons, context.searchText));
   }, [context.searchText]);
 
   useEffect(() => {
     if (loading) {
-      getFullPokemonsInfo(offset)
+      getFullPokemonsInfo(localPokemons.length)
         .then((info) => {
           setAllPokemons(
             filterPokemons([...allPokemons, ...info], context.searchText)
           );
 
-          setOffset((prev) => {
-            sessionStorage.setItem("offset", JSON.stringify(prev + 20));
-            return prev + 20;
-          });
-
           sessionStorage.setItem(
             "mainInfoForCard",
-            JSON.stringify([
-              ...getStorageCards<MainPokemonInfo>("mainInfoForCard"),
-              ...info,
-            ])
+            JSON.stringify([...localPokemons, ...info])
           );
         })
         .catch((e) => console.log(e))
@@ -99,27 +85,6 @@ const ListPokemons: FC = () => {
     </>
   );
 };
-
-function getStorageCards<T>(key: string): T[] {
-  const storage = JSON.parse(sessionStorage.getItem(key)!);
-
-  if (storage) {
-    return storage as T[];
-  } else {
-    return [];
-  }
-}
-
-function filterPokemons(
-  pokemons: MainPokemonInfo[],
-  filter: string | null
-): MainPokemonInfo[] {
-  if (filter) {
-    return pokemons.filter((pokemon) => pokemon.name.includes(filter));
-  } else {
-    return pokemons;
-  }
-}
 
 function getStorageCards<T>(key: string): T[] {
   const storage = JSON.parse(sessionStorage.getItem(key)!);
