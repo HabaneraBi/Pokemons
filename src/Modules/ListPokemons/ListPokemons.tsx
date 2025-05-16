@@ -3,7 +3,7 @@ import {
   getFullPokemonsInfo,
   getCountAllPokemons,
 } from "./api/getFullPokemons";
-import { useState, useEffect, useCallback, useContext } from "react";
+import { useState, useEffect, useCallback, useContext, useRef } from "react";
 import type { MainPokemonInfo } from "../../UI/types/types";
 import { CardPokemon } from "./components/CardPokemon";
 import { globalContext } from "../../App/App";
@@ -12,6 +12,8 @@ const ListPokemons: FC = () => {
   const [allPokemons, setAllPokemons] = useState<MainPokemonInfo[]>([]);
   const [loading, setLoading] = useState(false);
   const [stopCount, setStopCount] = useState(0);
+
+  const pokemonsContainerRef = useRef<HTMLDivElement>(null);
 
   const context = useContext(globalContext);
 
@@ -32,9 +34,12 @@ const ListPokemons: FC = () => {
 
   useEffect(() => {
     setAllPokemons(filterPokemons(localPokemons, context.searchText));
+    // checkLoad();
+    setLoading(true);
   }, [context.searchText]);
 
   useEffect(() => {
+    checkLoad();
     if (loading) {
       getFullPokemonsInfo(localPokemons.length)
         .then((info) => {
@@ -53,6 +58,19 @@ const ListPokemons: FC = () => {
         });
     }
   }, [loading]);
+
+  //запускает загрузку контента, если размер окна пользователя больше контейнера с карточками
+  const checkLoad = () => {
+    if (
+      !loading &&
+      pokemonsContainerRef.current &&
+      document.documentElement.clientHeight >=
+        pokemonsContainerRef.current.scrollHeight
+    ) {
+      setLoading(true);
+    }
+  };
+
   useEffect(() => {
     document.addEventListener("scroll", scrollHandler);
 
@@ -74,7 +92,10 @@ const ListPokemons: FC = () => {
   return (
     <>
       {allPokemons.length ? (
-        <div className="w-4/5 grid grid-cols-1 my-5 gap-y-6 sm:grid-cols-2 sm:w-9/10 sm:gap-x-4 lg:grid-cols-3 2xl:grid-cols-4">
+        <div
+          ref={pokemonsContainerRef}
+          className="w-4/5 grid grid-cols-1 my-5 gap-y-6 sm:grid-cols-2 sm:w-9/10 sm:gap-x-4 lg:grid-cols-3 2xl:grid-cols-4"
+        >
           {allPokemons.map((pokemon, index) => {
             return <CardPokemon key={index} {...pokemon} />;
           })}
