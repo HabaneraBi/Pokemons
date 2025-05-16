@@ -3,20 +3,28 @@ import {
   getFullPokemonsInfo,
   getCountAllPokemons,
 } from "./api/getFullPokemons";
-import { useState, useEffect, useCallback } from "react";
-import type { FullPokemonInfo } from "../../UI/types/types";
+import { useState, useEffect, useCallback, useContext } from "react";
+import type { MainPokemonInfo } from "../../UI/types/types";
 import { CardPokemon } from "./components/CardPokemon";
+import { all } from "axios";
+import { globalContext } from "../../App/App";
 
 const ListPokemons: FC = () => {
-  const [allPokemons, setAllPokemons] = useState<FullPokemonInfo[]>([]);
+  const [allPokemons, setAllPokemons] = useState<MainPokemonInfo[]>([]);
   const [loading, setLoading] = useState(false);
-  const [offset, setOffset] = useState(0);
+  const [offset, setOffset] = useState(0); //можно попробовать заменить на ref
   const [stopCount, setStopCount] = useState(0);
+
+  const context = useContext(globalContext);
 
   useEffect(() => {
     getCountAllPokemons().then((count) => setStopCount(count));
     if (sessionStorage.getItem("mainInfoForCard")) {
-      setAllPokemons(JSON.parse(sessionStorage.getItem("mainInfoForCard")!));
+      const localPokemons: MainPokemonInfo[] = JSON.parse(
+        sessionStorage.getItem("mainInfoForCard")!
+      );
+      setAllPokemons(filterPokemons(localPokemons, context.searchText));
+
       setOffset(JSON.parse(sessionStorage.getItem("offset")!));
       setLoading(false);
     } else {
@@ -25,10 +33,16 @@ const ListPokemons: FC = () => {
   }, []);
 
   useEffect(() => {
+    setAllPokemons(filterPokemons(getStorageInfo(), context.searchText));
+  }, [context.searchText]);
+
+  useEffect(() => {
     if (loading) {
       getFullPokemonsInfo(offset)
         .then((info) => {
-          setAllPokemons([...allPokemons, ...info]);
+          setAllPokemons(
+            filterPokemons([...allPokemons, ...info], context.searchText)
+          );
 
           setOffset((prev) => {
             sessionStorage.setItem("offset", JSON.stringify(prev + 20));
@@ -37,7 +51,7 @@ const ListPokemons: FC = () => {
 
           sessionStorage.setItem(
             "mainInfoForCard",
-            JSON.stringify([...allPokemons, ...info])
+            JSON.stringify([...getStorageInfo(), ...info])
           );
         })
         .catch((e) => console.log(e))
@@ -46,7 +60,6 @@ const ListPokemons: FC = () => {
         });
     }
   }, [loading]);
-
   useEffect(() => {
     document.addEventListener("scroll", scrollHandler);
 
@@ -73,5 +86,26 @@ const ListPokemons: FC = () => {
     </div>
   );
 };
+
+function getStorageInfo(): MainPokemonInfo[] {
+  const storage = JSON.parse(sessionStorage.getItem("mainInfoForCard")!);
+
+  if (storage) {
+    return storage as MainPokemonInfo[];
+  } else {
+    return [];
+  }
+}
+
+function filterPokemons(
+  pokemons: MainPokemonInfo[],
+  filter: string | null
+): MainPokemonInfo[] {
+  if (filter) {
+    return pokemons.filter((pokemon) => pokemon.name.includes(filter));
+  } else {
+    return pokemons;
+  }
+}
 
 export { ListPokemons };

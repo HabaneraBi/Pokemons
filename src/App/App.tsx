@@ -8,6 +8,8 @@ import { HomePage } from "../Pages/HomePage/HomePage";
 const globalContext = createContext<GlobalContext>({
   openTab: "home",
   setOpenTab: () => "",
+  searchText: "",
+  setSearchText: () => "",
 });
 
 const PAGES = ["home", "pokemons"] as const;
@@ -15,6 +17,7 @@ type pages = (typeof PAGES)[number];
 
 const App: FC = () => {
   const [openTab, setOpenTab] = useState<"home" | "pokemons">("home");
+  const [searchText, setSearchText] = useState<string>("");
 
   useEffect(() => {
     const sessionPage = sessionStorage.getItem("page");
@@ -34,13 +37,11 @@ const App: FC = () => {
   }, [openTab]);
 
   return (
-    <globalContext.Provider value={{ openTab, setOpenTab }}>
+    <globalContext.Provider
+      value={{ openTab, setOpenTab, searchText, setSearchText }}
+    >
       <Header />
-      {openTab === "pokemons" ? (
-        <Pokemons />
-      ) : (
-        <HomePage keyStorage="catchPokemonsInfo" />
-      )}
+      {openTab === "pokemons" ? <Pokemons /> : <HomePage />}
     </globalContext.Provider>
   );
 };
