@@ -36,11 +36,7 @@ const App: FC = () => {
   return (
     <globalContext.Provider value={{ openTab, setOpenTab }}>
       <Header />
-      {openTab === "pokemons" ? (
-        <Pokemons />
-      ) : (
-        <HomePage keyStorage="catchPokemonsInfo" />
-      )}
+      {openTab === "pokemons" ? <Pokemons /> : <HomePage />}
     </globalContext.Provider>
   );
 };

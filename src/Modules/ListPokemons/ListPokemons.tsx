@@ -3,12 +3,12 @@ import {
   getFullPokemonsInfo,
   getCountAllPokemons,
 } from "./api/getFullPokemons";
-import { useState, useEffect, useCallback } from "react";
-import type { FullPokemonInfo } from "../../UI/types/types";
+import { useState, useEffect } from "react";
+import type { MainPokemonInfo } from "../../UI/types/types";
 import { CardPokemon } from "./components/CardPokemon";
 
 const ListPokemons: FC = () => {
-  const [allPokemons, setAllPokemons] = useState<FullPokemonInfo[]>([]);
+  const [allPokemons, setAllPokemons] = useState<MainPokemonInfo[]>([]);
   const [loading, setLoading] = useState(false);
   const [offset, setOffset] = useState(0);
   const [stopCount, setStopCount] = useState(0);
@@ -18,7 +18,6 @@ const ListPokemons: FC = () => {
     if (sessionStorage.getItem("mainInfoForCard")) {
       setAllPokemons(JSON.parse(sessionStorage.getItem("mainInfoForCard")!));
       setOffset(JSON.parse(sessionStorage.getItem("offset")!));
-      setLoading(false);
     } else {
       setLoading(true);
     }
@@ -53,7 +52,7 @@ const ListPokemons: FC = () => {
     return () => document.removeEventListener("scroll", scrollHandler);
   });
 
-  const scrollHandler = useCallback(() => {
+  const scrollHandler = () => {
     if (
       document.documentElement.scrollHeight -
         (document.documentElement.scrollTop + window.innerHeight) <
@@ -63,14 +62,20 @@ const ListPokemons: FC = () => {
     ) {
       setLoading(true);
     }
-  }, [allPokemons, stopCount, loading]);
+  };
 
   return (
-    <div className="w-4/5 grid grid-cols-1 my-5 gap-y-6 sm:grid-cols-2 sm:w-9/10 sm:gap-x-4 lg:grid-cols-3 2xl:grid-cols-4">
-      {allPokemons.map((pokemon, index) => {
-        return <CardPokemon key={index} {...pokemon} />;
-      })}
-    </div>
+    <>
+      {allPokemons.length ? (
+        <div className="w-4/5 grid grid-cols-1 my-5 gap-y-6 sm:grid-cols-2 sm:w-9/10 sm:gap-x-4 lg:grid-cols-3 2xl:grid-cols-4">
+          {allPokemons.map((pokemon, index) => {
+            return <CardPokemon key={index} {...pokemon} />;
+          })}
+        </div>
+      ) : (
+        <div className="relative top-50 text-2xl">Loading...</div>
+      )}
+    </>
   );
 };
 

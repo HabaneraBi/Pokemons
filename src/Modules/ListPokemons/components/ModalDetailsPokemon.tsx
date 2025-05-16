@@ -4,19 +4,25 @@ import { Button } from "../../../Components/Button";
 import type { Dispatch, SetStateAction } from "react";
 import { getModalInfo } from "../api/getFullPokemons";
 import type { AllPokemonInfo, MainPokemonInfo } from "../../../UI/types/types";
+import { catchPokemonHandler } from "../functions/functions";
 
 interface ModalDetailsPokemonProps {
   setOpenModalDetails: Dispatch<SetStateAction<boolean>>;
   openModalDetails: boolean;
   pokemonInfo: MainPokemonInfo;
+  catched: boolean;
+  setCatched: (catched: boolean) => void;
 }
 
 const ModalDetailsPokemon: FC<ModalDetailsPokemonProps> = ({
   setOpenModalDetails,
   openModalDetails,
   pokemonInfo,
+  catched,
+  setCatched,
 }) => {
   const [modalInfo, setModalInfo] = useState<AllPokemonInfo>(pokemonInfo);
+  console.log("rerender from modal");
 
   useEffect(() => {
     if (openModalDetails) {
@@ -34,8 +40,15 @@ const ModalDetailsPokemon: FC<ModalDetailsPokemonProps> = ({
     }
   }, [openModalDetails]);
 
+  const onKeyHandler: React.KeyboardEventHandler = (e) => {
+    if (e.key === "Escape") {
+      setOpenModalDetails(false);
+    }
+  };
+
   return (
     <dialog
+      onKeyDown={onKeyHandler}
       ref={modalDetails}
       className={`w-17/20 p-5 h-8/10 mx-auto top-30 fixed rounded-2xl flex justify-center 2xl:w-4/5`}
     >
@@ -69,7 +82,14 @@ const ModalDetailsPokemon: FC<ModalDetailsPokemonProps> = ({
           </p>
 
           <div className="flex w-full justify-around mt-4 mb-4 md:mt-8">
-            <Button className="min-h-12 w-23 sm:w-35">CATCH POKEMON</Button>
+            <Button
+              onClick={() =>
+                catchPokemonHandler(catched, pokemonInfo, setCatched)
+              }
+              className="min-h-12 w-23 sm:w-35"
+            >
+              {catched ? "REMOVE POKEMON" : "CATCH POKEMON"}
+            </Button>
             <Button
               className="min-h-12 w-23 sm:w-35"
               onClick={() => setOpenModalDetails(false)}

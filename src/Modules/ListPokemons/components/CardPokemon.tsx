@@ -1,23 +1,18 @@
-import { useEffect, useState, type FC } from "react";
+import { useEffect, useState, memo, type FC } from "react";
 import type { MainPokemonInfo } from "../../../UI/types/types";
 import { Heading } from "../../../Components/Heading";
 import { Paragraph } from "../../../Components/Paragraph";
 import { Button } from "../../../Components/Button";
 import { createPortal } from "react-dom";
 import { ModalDetailsPokemon } from "./ModalDetailsPokemon";
-// import { getModalInfo } from "../api/getFullPokemons";
+import { getArrFromStorage, catchPokemonHandler } from "../functions/functions";
 
-const CardPokemon: FC<MainPokemonInfo> = (pokemon) => {
+const CardPokemon: FC<MainPokemonInfo> = memo((pokemon) => {
   const [catched, setCatched] = useState(false);
   const [openModalDetails, setOpenModalDetails] = useState(false);
 
-  const getArrFromStorage = () => {
-    const arrCatchPokemonsStorage: null | string =
-      localStorage.getItem("catchPokemonsInfo");
-    if (arrCatchPokemonsStorage) {
-      return JSON.parse(arrCatchPokemonsStorage) as MainPokemonInfo[];
-    }
-  };
+  console.log("rerender");
+
   useEffect(() => {
     const arrCatchPokemons = getArrFromStorage();
     if (arrCatchPokemons) {
@@ -33,41 +28,9 @@ const CardPokemon: FC<MainPokemonInfo> = (pokemon) => {
     setOpenModalDetails(true);
   }
 
-  function catchPokemonHandler() {
-    const arrCatchPokemons = getArrFromStorage();
-    if (!catched) {
-      if (arrCatchPokemons) {
-        localStorage.setItem(
-          "catchPokemonsInfo",
-          JSON.stringify([...arrCatchPokemons, pokemon])
-        );
-      } else {
-        localStorage.setItem("catchPokemonsInfo", JSON.stringify([pokemon]));
-      }
-      setCatched(true);
-    } else {
-      if (arrCatchPokemons) {
-        const newStorage: [] | MainPokemonInfo[] = arrCatchPokemons.filter(
-          (pokemonStorage) => {
-            if (pokemonStorage.name !== pokemon.name) {
-              return pokemonStorage;
-            }
-          }
-        );
-
-        if (newStorage.length) {
-          localStorage.setItem("catchPokemonsInfo", JSON.stringify(newStorage));
-        } else {
-          localStorage.removeItem("catchPokemonsInfo");
-        }
-      }
-      setCatched(false);
-    }
-  }
   return (
     <>
       <div className="flex flex-col w-full py-3 h-100 justify-around scale-100 transition-transform duration-75 ease-in items-center bg-[#E6E6E6] rounded-2xl hover:scale-102">
-        {/* <p className="text-xl">No picture :{`(`}</p> */}
         <img
           className={`${
             pokemon.imageUrl === "src/UI/icons/pikachu.jpg"
@@ -80,6 +43,7 @@ const CardPokemon: FC<MainPokemonInfo> = (pokemon) => {
         {pokemon.imageUrl === "src/UI/icons/pikachu.jpg" ? (
           <p className="text-xl">No picture :{`(`}</p>
         ) : null}
+
         <Heading className="text-2xl text-center">{pokemon.name}</Heading>
         <Paragraph className="w-3/4">{pokemon.abilities?.join(", ")}</Paragraph>
         <div className="flex justify-around w-9/10">
@@ -88,7 +52,10 @@ const CardPokemon: FC<MainPokemonInfo> = (pokemon) => {
           <p className="text-center">Speed: {pokemon.speed}</p>
         </div>
         <div className="flex justify-between w-9/10">
-          <Button onClick={catchPokemonHandler} className="p-1 w-9/20 min-h-15">
+          <Button
+            onClick={() => catchPokemonHandler(catched, pokemon, setCatched)}
+            className="p-1 w-9/20 min-h-15"
+          >
             {catched ? "REMOVE POKEMON" : "CATCH POKEMON"}
           </Button>
           <Button onClick={openModalHandler} className="p-1 w-9/20 min-h-15">
@@ -103,12 +70,14 @@ const CardPokemon: FC<MainPokemonInfo> = (pokemon) => {
               pokemonInfo={pokemon}
               setOpenModalDetails={setOpenModalDetails}
               openModalDetails={openModalDetails}
+              catched={catched}
+              setCatched={setCatched}
             />,
             document.body
           )
         : null}
     </>
   );
-};
+});
 
 export { CardPokemon };
