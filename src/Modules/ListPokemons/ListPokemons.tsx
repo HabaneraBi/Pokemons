@@ -20,11 +20,14 @@ const ListPokemons: FC = () => {
 
   useEffect(() => {
     getCountAllPokemons().then((count) => setStopCount(count));
-    setAllPokemons(filterPokemons(localPokemons, context.searchText));
+  }, []);
+
+  useEffect(() => {
     setLoading(true);
   }, [context.searchText]);
 
   useEffect(() => {
+    setAllPokemons(filterPokemons(localPokemons, context.searchText));
     checkLoad();
     if (loading) {
       getFullPokemonsInfo(localPokemons.length)
