@@ -4,7 +4,7 @@ import { Home } from "../../Modules/Home/Home";
 
 const HomePage: FC = () => {
   return (
-    <div className="flex flex-col items-center mt-6">
+    <div tabIndex={-1} className="flex flex-col items-center mt-6">
       <Heading className="mt-6 text-2xl">My Pokemons</Heading>
       <Home />
     </div>

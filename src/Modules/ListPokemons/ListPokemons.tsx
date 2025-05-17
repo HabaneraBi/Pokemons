@@ -12,6 +12,19 @@ const ListPokemons: FC = () => {
   const [loading, setLoading] = useState(false);
   const [offset, setOffset] = useState(0);
   const [stopCount, setStopCount] = useState(0);
+  const [allowSaveScroll, setAllowSaveScroll] = useState(true);
+
+  useEffect(() => {
+    if (sessionStorage.getItem("pokemonsScrollPosition")) {
+      if (allPokemons.length > 0 && allowSaveScroll) {
+        const scrollPosition: number = JSON.parse(
+          sessionStorage.getItem("pokemonsScrollPosition")!
+        );
+        window.scrollTo(0, scrollPosition);
+        setAllowSaveScroll(false);
+      }
+    }
+  }, [allPokemons]);
 
   useEffect(() => {
     getCountAllPokemons().then((count) => setStopCount(count));

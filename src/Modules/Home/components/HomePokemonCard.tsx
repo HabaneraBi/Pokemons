@@ -2,7 +2,7 @@ import { Button } from "../../../Components/Button";
 import { Paragraph } from "../../../Components/Paragraph";
 import { Heading } from "../../../Components/Heading";
 import type { MainPokemonInfo } from "../../../UI/types/types";
-import type { FC } from "react";
+import { type FC } from "react";
 
 interface HomePokemonCardProps {
   pokemon: MainPokemonInfo;

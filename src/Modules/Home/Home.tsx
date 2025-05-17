@@ -1,4 +1,4 @@
-import { type FC, useState } from "react";
+import { type FC, useState, useEffect } from "react";
 import { HomePokemonCard } from "./components/HomePokemonCard";
 import "../../index.css";
 import type { MainPokemonInfo } from "../../UI/types/types";
@@ -8,6 +8,15 @@ const Home: FC = () => {
     const cards = localStorage.getItem("catchPokemonsInfo");
     return cards ? JSON.parse(cards) : [];
   });
+
+  useEffect(() => {
+    const scrollStorage: null | string =
+      sessionStorage.getItem("homeScrollPosition");
+    if (scrollStorage) {
+      const scrollPosition: number = JSON.parse(scrollStorage);
+      window.scrollTo(0, scrollPosition);
+    }
+  }, []);
 
   return (
     <>
