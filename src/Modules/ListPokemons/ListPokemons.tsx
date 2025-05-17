@@ -13,8 +13,6 @@ const ListPokemons: FC = () => {
   const [loading, setLoading] = useState(false);
   const [stopCount, setStopCount] = useState(0);
 
-  const pokemonsContainerRef = useRef<HTMLDivElement>(null);
-
   const context = useContext(globalContext);
 
   const localPokemons: MainPokemonInfo[] =
@@ -34,7 +32,6 @@ const ListPokemons: FC = () => {
 
   useEffect(() => {
     setAllPokemons(filterPokemons(localPokemons, context.searchText));
-    // checkLoad();
     setLoading(true);
   }, [context.searchText]);
 
@@ -56,28 +53,30 @@ const ListPokemons: FC = () => {
         .finally(() => {
           setLoading(false);
         });
+    } else {
+      document.addEventListener("scroll", scrollHandler);
+      return () => document.removeEventListener("scroll", scrollHandler);
     }
   }, [loading]);
 
-  //запускает загрузку контента, если размер окна пользователя больше контейнера с карточками
+  //запускает загрузку контента, если размер контейера карточек от видимого верха до низа документа меньше размера окна пользователя
   const checkLoad = () => {
+    const remainingHeight: number =
+      document.documentElement.scrollHeight - window.scrollY;
+    const clientWindow: number = document.documentElement.clientHeight;
+
     if (
       !loading &&
-      pokemonsContainerRef.current &&
-      document.documentElement.clientHeight >=
-        pokemonsContainerRef.current.scrollHeight
+      stopCount != localPokemons.length &&
+      remainingHeight - clientWindow - window.innerHeight <= 300
     ) {
       setLoading(true);
     }
   };
 
-  useEffect(() => {
-    document.addEventListener("scroll", scrollHandler);
-
-    return () => document.removeEventListener("scroll", scrollHandler);
-  });
-
   const scrollHandler = () => {
+    console.log("scroll");
+
     if (
       document.documentElement.scrollHeight -
         (document.documentElement.scrollTop + window.innerHeight) <
@@ -92,10 +91,7 @@ const ListPokemons: FC = () => {
   return (
     <>
       {allPokemons.length ? (
-        <div
-          ref={pokemonsContainerRef}
-          className="w-4/5 grid grid-cols-1 my-5 gap-y-6 sm:grid-cols-2 sm:w-9/10 sm:gap-x-4 lg:grid-cols-3 2xl:grid-cols-4"
-        >
+        <div className="w-4/5 grid grid-cols-1 my-5 gap-y-6 sm:grid-cols-2 sm:w-9/10 sm:gap-x-4 lg:grid-cols-3 2xl:grid-cols-4">
           {allPokemons.map((pokemon, index) => {
             return <CardPokemon key={index} {...pokemon} />;
           })}
