@@ -15,16 +15,15 @@ const ListPokemons: FC = () => {
 
   const context = useContext(globalContext);
 
+  console.log("render");
+
   const localPokemons: MainPokemonInfo[] =
     getStorageCards<MainPokemonInfo>("mainInfoForCard");
 
   useEffect(() => {
     getCountAllPokemons().then((count) => setStopCount(count));
-  }, []);
-
-  useEffect(() => {
     setLoading(true);
-  }, [context.searchText]);
+  }, []);
 
   useEffect(() => {
     setAllPokemons(filterPokemons(localPokemons, context.searchText));
@@ -49,7 +48,7 @@ const ListPokemons: FC = () => {
       document.addEventListener("scroll", checkLoad);
       return () => document.removeEventListener("scroll", checkLoad);
     }
-  }, [loading]);
+  }, [loading, context.searchText]);
 
   //запускает загрузку контента, если размер контейера карточек от видимого верха до низа документа меньше размера окна пользователя
   const checkLoad = () => {
@@ -61,7 +60,7 @@ const ListPokemons: FC = () => {
     if (
       !loading &&
       stopCount != localPokemons.length &&
-      scrollTop + clientHeight >= scrollHeight * 0.6
+      scrollTop + clientHeight >= scrollHeight * 0.7
     ) {
       setLoading(true);
     }
