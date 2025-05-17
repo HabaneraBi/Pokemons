@@ -20,17 +20,6 @@ const ListPokemons: FC = () => {
 
   useEffect(() => {
     getCountAllPokemons().then((count) => setStopCount(count));
-    if (sessionStorage.getItem("mainInfoForCard")) {
-      const localPokemons: MainPokemonInfo[] = JSON.parse(
-        sessionStorage.getItem("mainInfoForCard")!
-      );
-      setAllPokemons(filterPokemons(localPokemons, context.searchText));
-    } else {
-      setLoading(true);
-    }
-  }, []);
-
-  useEffect(() => {
     setAllPokemons(filterPokemons(localPokemons, context.searchText));
     setLoading(true);
   }, [context.searchText]);
@@ -54,35 +43,22 @@ const ListPokemons: FC = () => {
           setLoading(false);
         });
     } else {
-      document.addEventListener("scroll", scrollHandler);
-      return () => document.removeEventListener("scroll", scrollHandler);
+      document.addEventListener("scroll", checkLoad);
+      return () => document.removeEventListener("scroll", checkLoad);
     }
   }, [loading]);
 
   //запускает загрузку контента, если размер контейера карточек от видимого верха до низа документа меньше размера окна пользователя
   const checkLoad = () => {
-    const remainingHeight: number =
-      document.documentElement.scrollHeight - window.scrollY;
-    const clientWindow: number = document.documentElement.clientHeight;
+    const scrollTop =
+      document.documentElement.scrollTop || document.body.scrollTop;
+    const scrollHeight = document.documentElement.scrollHeight;
+    const clientHeight = document.documentElement.clientHeight;
 
     if (
       !loading &&
       stopCount != localPokemons.length &&
-      remainingHeight - clientWindow - window.innerHeight <= 300
-    ) {
-      setLoading(true);
-    }
-  };
-
-  const scrollHandler = () => {
-    console.log("scroll");
-
-    if (
-      document.documentElement.scrollHeight -
-        (document.documentElement.scrollTop + window.innerHeight) <
-        300 &&
-      allPokemons.length < stopCount &&
-      !loading
+      scrollTop + clientHeight >= scrollHeight * 0.6
     ) {
       setLoading(true);
     }
