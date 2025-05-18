@@ -12,15 +12,17 @@ const ListPokemons: FC = () => {
   const [allPokemons, setAllPokemons] = useState<MainPokemonInfo[]>([]);
   const [loading, setLoading] = useState(false);
   const [allowSaveScroll, setAllowSaveScroll] = useState(true);
+  const [emtyResults, setEmptyResults] = useState("Loading...");
   const context = useContext(globalContext);
 
   function filterPokemons() {
     const searchInfo = context.allPokemonsNames.filter((pokemon) =>
       pokemon.name.startsWith(context.searchText)
     );
-    getFullPokemonsInfoAlternative(searchInfo).then((info) =>
-      setAllPokemons(info)
-    );
+    getFullPokemonsInfoAlternative(searchInfo).then((info) => {
+      setAllPokemons(info);
+      setEmptyResults("not found :(");
+    });
   }
 
   function getStorageCards(): MainPokemonInfo[] {
@@ -90,9 +92,6 @@ const ListPokemons: FC = () => {
     const scrollHeight = document.documentElement.scrollHeight;
     const clientHeight = document.documentElement.clientHeight;
 
-    // console.log(scrollHeight * 0.7, scrollTop, clientHeight);
-    // console.log(scrollTop + clientHeight >= scrollHeight * 0.7)
-
     if (
       !loading &&
       context.stopCount != getStorageCards().length &&
@@ -112,7 +111,7 @@ const ListPokemons: FC = () => {
           })}
         </div>
       ) : (
-        <div className="relative top-50 text-2xl">Loading...</div>
+        <div className="relative top-50 text-2xl">{emtyResults}</div>
       )}
     </>
   );

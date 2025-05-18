@@ -6,7 +6,9 @@ const SearchBox = () => {
   const context = useContext(globalContext);
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    context.setSearchText(event.target.value);
+    setTimeout(() => {
+      context.setSearchText(event.target.value);
+    }, 750);
   };
 
   return (
@@ -21,7 +23,7 @@ const SearchBox = () => {
       <input
         type="text"
         placeholder="Search pokemon..."
-        className=" focus:outline-none"
+        className="w-full focus:outline-none"
         onChange={handleInputChange}
       />
     </div>
