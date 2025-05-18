@@ -10,7 +10,7 @@ const SearchBox = () => {
   };
 
   return (
-    <div className="flex items-center gap-2 bg-white rounded-2xl py-1.5 px-2">
+    <div className="flex items-center gap-2 bg-white rounded-2xl py-1.5 px-2 w-60 lg:w-1/3">
       <span className="w-5 h-auto inline-block">
         <img
           className="w-auto h-auto object-contain"
