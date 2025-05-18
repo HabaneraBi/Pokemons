@@ -8,7 +8,7 @@ const Header: FC = () => {
   const context = useContext(globalContext);
 
   return (
-    <header className="bg-[#e1fcfc] sticky z-2 py-2 gap-4 flex flex-col justify-around px-2 items-center sm:flex-row sm:justify-between sm:px-10">
+    <header className="bg-[#e1fcfc] top-0 sticky z-2 py-2 gap-4 flex flex-col justify-around px-2 items-center sm:flex-row sm:justify-between sm:px-10">
       <img
         src="src/UI/icons/logoPokemon.svg"
         className="w-1/3 h-1/2 sm:w-1/5 lg:w-45"

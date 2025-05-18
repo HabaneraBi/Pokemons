@@ -15,18 +15,31 @@ const HomePokemonCard: FC<HomePokemonCardProps> = ({
   saveCards,
   setSaveCards,
 }) => {
-  const deleteCardHandler = () => {
-    const newSaveCards = saveCards.filter((saveCard) => {
+  const filterForDeleting = (cards: MainPokemonInfo[]) => {
+    return cards.filter((saveCard) => {
       if (saveCard.name !== pokemon.name) {
         return saveCard;
       }
     });
-    if (newSaveCards.length) {
-      localStorage.setItem("catchPokemonsInfo", JSON.stringify(newSaveCards));
+  };
+
+  const deleteCardHandler = () => {
+    const newSaveCards = filterForDeleting(saveCards);
+    setSaveCards(newSaveCards);
+
+    const storageSaveCards = JSON.parse(
+      localStorage.getItem("catchPokemonsInfo")!
+    ) as MainPokemonInfo[];
+    const newStorageSaveCards = filterForDeleting(storageSaveCards);
+
+    if (newStorageSaveCards.length) {
+      localStorage.setItem(
+        "catchPokemonsInfo",
+        JSON.stringify(newStorageSaveCards)
+      );
     } else {
       localStorage.removeItem("catchPokemonsInfo");
     }
-    setSaveCards(newSaveCards);
   };
 
   return (

@@ -2,8 +2,9 @@ import type { FC } from "react";
 import {
   getFullPokemonsInfo,
   getCountAllPokemons,
+  getFullPokemonsInfoAlternative,
 } from "./api/getFullPokemons";
-import { useState, useEffect, useCallback, useContext, useRef } from "react";
+import { useState, useEffect, useContext } from "react";
 import type { MainPokemonInfo } from "../../UI/types/types";
 import { CardPokemon } from "./components/CardPokemon";
 import { globalContext } from "../../App/App";
@@ -12,45 +13,80 @@ const ListPokemons: FC = () => {
   const [allPokemons, setAllPokemons] = useState<MainPokemonInfo[]>([]);
   const [loading, setLoading] = useState(false);
   const [stopCount, setStopCount] = useState(0);
-
+  const [allowSaveScroll, setAllowSaveScroll] = useState(true);
   const context = useContext(globalContext);
 
-  console.log("render");
+  function filterPokemons() {
+    const searchInfo = context.allPokemonsNames.filter((pokemon) =>
+      pokemon.name.startsWith(context.searchText)
+    );
+    getFullPokemonsInfoAlternative(searchInfo).then((info) =>
+      setAllPokemons(info)
+    );
+  }
 
-  const localPokemons: MainPokemonInfo[] =
-    getStorageCards<MainPokemonInfo>("mainInfoForCard");
+  useEffect(() => {
+    if (context.searchText) {
+      filterPokemons();
+      setLoading(false);
+    } else {
+      setAllPokemons(getStorageCards());
+    }
+  }, [context.searchText]);
+
+  function getStorageCards(): MainPokemonInfo[] {
+    const storage = JSON.parse(sessionStorage.getItem("mainInfoForCard")!);
+    if (storage) {
+      return storage;
+    } else {
+      return [];
+    }
+  }
+
+  useEffect(() => {
+    if (sessionStorage.getItem("pokemonsScrollPosition")) {
+      if (allPokemons.length > 0 && allowSaveScroll) {
+        const scrollPosition: number = JSON.parse(
+          sessionStorage.getItem("pokemonsScrollPosition")!
+        );
+        window.scrollTo(0, scrollPosition);
+        setAllowSaveScroll(false);
+      }
+    }
+  }, [allPokemons]);
 
   useEffect(() => {
     getCountAllPokemons().then((count) => setStopCount(count));
-    setLoading(true);
+    if (getStorageCards().length) {
+      setAllPokemons(getStorageCards());
+    } else {
+      setLoading(true);
+    }
   }, []);
 
   useEffect(() => {
-    setAllPokemons(filterPokemons(localPokemons, context.searchText));
-    checkLoad();
     if (loading) {
-      getFullPokemonsInfo(localPokemons.length)
+      getFullPokemonsInfo(getStorageCards().length)
         .then((info) => {
-          setAllPokemons(
-            filterPokemons([...allPokemons, ...info], context.searchText)
-          );
-
+          setAllPokemons([...getStorageCards(), ...info]);
           sessionStorage.setItem(
             "mainInfoForCard",
-            JSON.stringify([...localPokemons, ...info])
+            JSON.stringify([...getStorageCards(), ...info])
           );
         })
         .catch((e) => console.log(e))
         .finally(() => {
           setLoading(false);
         });
-    } else {
-      document.addEventListener("scroll", checkLoad);
-      return () => document.removeEventListener("scroll", checkLoad);
     }
-  }, [loading, context.searchText]);
+  }, [loading]);
 
-  //запускает загрузку контента, если размер контейера карточек от видимого верха до низа документа меньше размера окна пользователя
+  useEffect(() => {
+    document.addEventListener("scroll", checkLoad);
+
+    return () => document.removeEventListener("scroll", checkLoad);
+  });
+
   const checkLoad = () => {
     const scrollTop =
       document.documentElement.scrollTop || document.body.scrollTop;
@@ -59,8 +95,9 @@ const ListPokemons: FC = () => {
 
     if (
       !loading &&
-      stopCount != localPokemons.length &&
-      scrollTop + clientHeight >= scrollHeight * 0.7
+      stopCount != getStorageCards().length &&
+      scrollTop + clientHeight >= scrollHeight * 0.7 &&
+      context.searchText === ""
     ) {
       setLoading(true);
     }
@@ -81,25 +118,4 @@ const ListPokemons: FC = () => {
   );
 };
 
-function getStorageCards<T>(key: string): T[] {
-  const storage = JSON.parse(sessionStorage.getItem(key)!);
-
-  if (storage) {
-    return storage as T[];
-  } else {
-    return [];
-  }
-}
-
-function filterPokemons(
-  pokemons: MainPokemonInfo[],
-  filter: string | null
-): MainPokemonInfo[] {
-  if (filter) {
-    return pokemons.filter((pokemon) => pokemon.name.includes(filter));
-  } else {
-    return pokemons;
-  }
-}
-
-export { ListPokemons, filterPokemons };
+export { ListPokemons };
