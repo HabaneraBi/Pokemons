@@ -17,6 +17,15 @@ const Home: FC = () => {
   );
 
   useEffect(() => {
+    const scrollStorage: null | string =
+      sessionStorage.getItem("homeScrollPosition");
+    if (scrollStorage) {
+      const scrollPosition: number = JSON.parse(scrollStorage);
+      window.scrollTo(0, scrollPosition);
+    }
+  }, []);
+
+  useEffect(() => {
     if (context.searchText) {
       setSaveCards(
         saveCards.filter((pokemon) =>

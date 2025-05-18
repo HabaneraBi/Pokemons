@@ -1,7 +1,6 @@
 import type { FC } from "react";
 import {
   getFullPokemonsInfo,
-  getCountAllPokemons,
   getFullPokemonsInfoAlternative,
 } from "./api/getFullPokemons";
 import { useState, useEffect, useContext } from "react";
@@ -12,7 +11,6 @@ import { globalContext } from "../../App/App";
 const ListPokemons: FC = () => {
   const [allPokemons, setAllPokemons] = useState<MainPokemonInfo[]>([]);
   const [loading, setLoading] = useState(false);
-  const [stopCount, setStopCount] = useState(0);
   const [allowSaveScroll, setAllowSaveScroll] = useState(true);
   const context = useContext(globalContext);
 
@@ -25,15 +23,6 @@ const ListPokemons: FC = () => {
     );
   }
 
-  useEffect(() => {
-    if (context.searchText) {
-      filterPokemons();
-      setLoading(false);
-    } else {
-      setAllPokemons(getStorageCards());
-    }
-  }, [context.searchText]);
-
   function getStorageCards(): MainPokemonInfo[] {
     const storage = JSON.parse(sessionStorage.getItem("mainInfoForCard")!);
     if (storage) {
@@ -42,6 +31,15 @@ const ListPokemons: FC = () => {
       return [];
     }
   }
+
+  useEffect(() => {
+    if (context.searchText) {
+      filterPokemons();
+      setLoading(false);
+    } else {
+      setAllPokemons(getStorageCards());
+    }
+  }, [context.searchText]);
 
   useEffect(() => {
     if (sessionStorage.getItem("pokemonsScrollPosition")) {
@@ -56,7 +54,6 @@ const ListPokemons: FC = () => {
   }, [allPokemons]);
 
   useEffect(() => {
-    getCountAllPokemons().then((count) => setStopCount(count));
     if (getStorageCards().length) {
       setAllPokemons(getStorageCards());
     } else {
@@ -93,9 +90,12 @@ const ListPokemons: FC = () => {
     const scrollHeight = document.documentElement.scrollHeight;
     const clientHeight = document.documentElement.clientHeight;
 
+    // console.log(scrollHeight * 0.7, scrollTop, clientHeight);
+    // console.log(scrollTop + clientHeight >= scrollHeight * 0.7)
+
     if (
       !loading &&
-      stopCount != getStorageCards().length &&
+      context.stopCount != getStorageCards().length &&
       scrollTop + clientHeight >= scrollHeight * 0.7 &&
       context.searchText === ""
     ) {

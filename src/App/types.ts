@@ -6,6 +6,6 @@ interface GlobalContext {
   searchText: string;
   setSearchText: React.Dispatch<React.SetStateAction<string>>;
   allPokemonsNames: { name: string; url: string }[];
+  stopCount: number;
 }
-
 export type { GlobalContext };
