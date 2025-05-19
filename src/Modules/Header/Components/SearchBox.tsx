@@ -7,7 +7,7 @@ const SearchBox = () => {
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setTimeout(() => {
-      context.setSearchText(event.target.value);
+      context.setSearchText(event.target.value.toLowerCase());
     }, 750);
   };
 
