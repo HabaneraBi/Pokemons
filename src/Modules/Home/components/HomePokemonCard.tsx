@@ -70,12 +70,12 @@ const HomePokemonCard: FC<HomePokemonCardProps> = ({
           {pokemon.abilities?.join(", ")}
         </Paragraph>
         <div
-          className="flex justify-around w-full
+          className="flex justify-around w-full text-center
         sm:justify-evenly"
         >
-          <p>Height: {pokemon.height}</p>
-          <p>Weight: {pokemon.weight}</p>
-          <p>Speed: {pokemon.speed}</p>
+          <p className="mx-1">Height: {pokemon.height}</p>
+          <p className="mx-1">Weight: {pokemon.weight}</p>
+          <p className="mx-1">Speed: {pokemon.speed}</p>
         </div>
       </div>
 
