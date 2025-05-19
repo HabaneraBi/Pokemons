@@ -3,6 +3,7 @@ import { Paragraph } from "../../../Components/Paragraph";
 import { Heading } from "../../../Components/Heading";
 import type { MainPokemonInfo } from "../../../UI/types/types";
 import { type FC } from "react";
+import pikachu from "/src/UI/icons/pikachu.jpg";
 
 interface HomePokemonCardProps {
   pokemon: MainPokemonInfo;
@@ -57,7 +58,11 @@ const HomePokemonCard: FC<HomePokemonCardProps> = ({
             ? "rounded-2xl shadow-md"
             : ""
         }`}
-        src={pokemon.imageUrl}
+        src={
+          pokemon.imageUrl === "src/UI/icons/pikachu.jpg"
+            ? pikachu
+            : pokemon.imageUrl
+        }
         alt={`image - ${pokemon.name}`}
       />
 
