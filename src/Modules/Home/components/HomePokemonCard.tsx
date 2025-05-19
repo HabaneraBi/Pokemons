@@ -54,12 +54,12 @@ const HomePokemonCard: FC<HomePokemonCardProps> = ({
     >
       <img
         className={`w-40 h-40 max-w-full ${
-          pokemon.imageUrl === "src/UI/icons/pikachu.jpg"
+          pokemon.imageUrl === "/src/UI/icons/pikachu.jpg"
             ? "rounded-2xl shadow-md"
             : ""
         }`}
         src={
-          pokemon.imageUrl === "src/UI/icons/pikachu.jpg"
+          pokemon.imageUrl === "/src/UI/icons/pikachu.jpg"
             ? pikachu
             : pokemon.imageUrl
         }
