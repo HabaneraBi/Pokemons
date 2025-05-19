@@ -2,7 +2,7 @@ import type { FC } from "react";
 import { NavItem } from "./Components/NavItem";
 import { useContext } from "react";
 import { globalContext } from "../../App/App";
-import { SearchBox } from "./Components/SearchBox/SearchBox";
+import { SearchBox } from "./Components/SearchBox";
 
 const Header: FC = () => {
   const context = useContext(globalContext);

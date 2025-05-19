@@ -1,6 +1,5 @@
 import { useContext, type ChangeEvent } from "react";
-import "../../../../index.css";
-import { globalContext } from "../../../../App/App";
+import { globalContext } from "../../../App/App";
 
 const SearchBox = () => {
   const context = useContext(globalContext);
