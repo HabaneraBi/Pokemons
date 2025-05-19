@@ -1,7 +1,7 @@
 import type { FC } from "react";
 import {
-  getFullPokemonsInfo,
-  getFullPokemonsInfoAlternative,
+  getFullPackageInfo,
+  getFullForFilterInfo,
 } from "./api/getFullPokemons";
 import { useState, useEffect, useContext } from "react";
 import type { MainPokemonInfo } from "../../UI/types/types";
@@ -19,7 +19,7 @@ const ListPokemons: FC = () => {
     const searchInfo = context.allPokemonsNames.filter((pokemon) =>
       pokemon.name.startsWith(context.searchText)
     );
-    getFullPokemonsInfoAlternative(searchInfo).then((info) => {
+    getFullForFilterInfo(searchInfo).then((info) => {
       setAllPokemons(info);
       setEmptyResults("not found :(");
     });
@@ -52,6 +52,8 @@ const ListPokemons: FC = () => {
         window.scrollTo(0, scrollPosition);
         setAllowSaveScroll(false);
       }
+    } else {
+      setAllowSaveScroll(false);
     }
   }, [allPokemons]);
 
@@ -65,7 +67,7 @@ const ListPokemons: FC = () => {
 
   useEffect(() => {
     if (loading) {
-      getFullPokemonsInfo(getStorageCards().length)
+      getFullPackageInfo(getStorageCards().length)
         .then((info) => {
           setAllPokemons([...getStorageCards(), ...info]);
           sessionStorage.setItem(
@@ -96,7 +98,8 @@ const ListPokemons: FC = () => {
       !loading &&
       context.stopCount != getStorageCards().length &&
       scrollTop + clientHeight >= scrollHeight * 0.7 &&
-      context.searchText === ""
+      context.searchText === "" &&
+      !allowSaveScroll
     ) {
       setLoading(true);
     }

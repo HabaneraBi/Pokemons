@@ -50,11 +50,15 @@ async function getShortPokemonsInfo(
   return requestShort.data.results;
 }
 
-export async function getFullPokemonsInfoAlternative(
+export async function getFullForFilterInfo(
   shortPokemonsInfo: InfoFromRequestGroupCards[]
 ) {
+  return getFullPokemonsInfo(shortPokemonsInfo);
+}
+
+async function getFullPokemonsInfo(arr: InfoFromRequestGroupCards[]) {
   const fullPokemonsInfo: MainPokemonInfo[] = await Promise.all(
-    shortPokemonsInfo.map(async (pokemon) => {
+    arr.map(async (pokemon) => {
       const requsetForFullInfo = await axios.get(pokemon.url);
       const fullInfo: TypeRequestForMainInfo = requsetForFullInfo.data;
 
@@ -77,33 +81,11 @@ export async function getFullPokemonsInfoAlternative(
   return fullPokemonsInfo;
 }
 
-export async function getFullPokemonsInfo(
+export async function getFullPackageInfo(
   offset: number
 ): Promise<MainPokemonInfo[]> {
   const shortPokemonsInfo = await getShortPokemonsInfo(offset);
-
-  const fullPokemonsInfo: MainPokemonInfo[] = await Promise.all(
-    shortPokemonsInfo.map(async (pokemon) => {
-      const requsetForFullInfo = await axios.get(pokemon.url);
-      const fullInfo: TypeRequestForMainInfo = requsetForFullInfo.data;
-
-      const imageUrl =
-        fullInfo.sprites.other.dream_world.front_default ??
-        fullInfo.sprites.front_default ??
-        fullInfo.sprites.other.home.front_default ??
-        "src/UI/icons/pikachu.jpg";
-
-      return {
-        name: pokemon.name,
-        abilities: fullInfo.types.map((type) => type.type.name),
-        imageUrl: imageUrl,
-        height: fullInfo.height,
-        weight: fullInfo.weight,
-        speed: fullInfo.stats[5].base_stat,
-      };
-    })
-  );
-  return fullPokemonsInfo;
+  return getFullPokemonsInfo(shortPokemonsInfo);
 }
 
 export async function getModalInfo(name: string): Promise<ModalInfo> {
