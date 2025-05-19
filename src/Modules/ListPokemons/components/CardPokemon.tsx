@@ -6,6 +6,7 @@ import { Button } from "../../../Components/Button";
 import { createPortal } from "react-dom";
 import { ModalDetailsPokemon } from "./ModalDetailsPokemon";
 import { getArrFromStorage, catchPokemonHandler } from "../functions/functions";
+import pikachu from "/src/UI/icons/pikachu.jpg";
 
 const CardPokemon: FC<MainPokemonInfo> = memo((pokemon) => {
   const [catched, setCatched] = useState(false);
@@ -35,10 +36,14 @@ const CardPokemon: FC<MainPokemonInfo> = memo((pokemon) => {
               ? "w-30 h-3/10 rounded-2xl shadow-md"
               : "w-40 h-2/5"
           }`}
-          src={pokemon.imageUrl}
+          src={
+            pokemon.imageUrl === "/src/UI/icons/pikachu.jpg"
+              ? pikachu
+              : pokemon.imageUrl
+          }
           alt={`image - ${pokemon.name}`}
         />
-        {pokemon.imageUrl === "src/UI/icons/pikachu.jpg" ? (
+        {pokemon.imageUrl === "/src/UI/icons/pikachu.jpg" ? (
           <p className="text-xl">No picture :{`(`}</p>
         ) : null}
 

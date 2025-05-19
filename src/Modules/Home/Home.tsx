@@ -3,6 +3,7 @@ import { HomePokemonCard } from "./components/HomePokemonCard";
 import "../../index.css";
 import type { MainPokemonInfo } from "../../UI/types/types";
 import { globalContext } from "../../App/App";
+import pikachu from "/src/UI/icons/pikachu.jpg";
 
 const Home: FC = () => {
   const context = useContext(globalContext);
@@ -54,7 +55,7 @@ const Home: FC = () => {
         <div className="mt-10 w-4/5 mx-auto flex justify-center items-center flex-col">
           <img
             className="size-auto rounded-2xl shadow-xl min-[480px]:size-100"
-            src="/src/UI/icons/pikachu.jpg"
+            src={pikachu}
           />
           <p className="mt-4 text-2xl text-center">Empty...</p>
         </div>

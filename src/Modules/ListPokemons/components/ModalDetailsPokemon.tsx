@@ -5,6 +5,7 @@ import type { Dispatch, SetStateAction } from "react";
 import { getModalInfo } from "../api/getFullPokemons";
 import type { AllPokemonInfo, MainPokemonInfo } from "../../../UI/types/types";
 import { catchPokemonHandler } from "../functions/functions";
+import pikachu from "/src/UI/icons/pikachu.jpg";
 
 interface ModalDetailsPokemonProps {
   setOpenModalDetails: Dispatch<SetStateAction<boolean>>;
@@ -54,11 +55,15 @@ const ModalDetailsPokemon: FC<ModalDetailsPokemonProps> = ({
       <div className="size-full flex flex-col justify-between items-center gap-2 xl:flex-row xl:gap-10">
         <img
           className={`w-50 h-75 self-center sm:size-70 xl:size-74 ${
-            pokemonInfo.imageUrl === "/src/UI/icons/pikachu.jpg"
+            modalInfo.imageUrl === "/src/UI/icons/pikachu.jpg"
               ? "rounded-2xl shadow-md"
               : ""
           }`}
-          src={modalInfo.imageUrl}
+          src={
+            modalInfo.imageUrl === "/src/UI/icons/pikachu.jpg"
+              ? pikachu
+              : modalInfo.imageUrl
+          }
         />
         <div className="flex flex-col items-center justify-evenly w-full xl:h-full">
           <Heading className="mt-2 text-2xl xl:text-4xl">
