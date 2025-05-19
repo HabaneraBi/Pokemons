@@ -15,7 +15,7 @@ const SearchBox = () => {
       <span className="w-5 h-auto inline-block">
         <img
           className="w-auto h-auto object-contain"
-          src="src\UI\icons\loupe.svg"
+          src="/src/UI/icons/loupe.svg"
           alt=""
         />
       </span>

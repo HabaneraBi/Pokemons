@@ -31,7 +31,7 @@ const CardPokemon: FC<MainPokemonInfo> = memo((pokemon) => {
       <div className="flex flex-col w-full py-3 h-100 justify-around scale-100 transition-transform duration-75 ease-in items-center bg-[#E6E6E6] rounded-2xl hover:scale-102">
         <img
           className={`${
-            pokemon.imageUrl === "src/UI/icons/pikachu.jpg"
+            pokemon.imageUrl === "/src/UI/icons/pikachu.jpg"
               ? "w-30 h-3/10 rounded-2xl shadow-md"
               : "w-40 h-2/5"
           }`}

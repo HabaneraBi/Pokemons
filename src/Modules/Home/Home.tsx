@@ -54,7 +54,7 @@ const Home: FC = () => {
         <div className="mt-10 w-4/5 mx-auto flex justify-center items-center flex-col">
           <img
             className="size-auto rounded-2xl shadow-xl min-[480px]:size-100"
-            src="src/UI/icons/pikachu.jpg"
+            src="/src/UI/icons/pikachu.jpg"
           />
           <p className="mt-4 text-2xl text-center">Empty...</p>
         </div>

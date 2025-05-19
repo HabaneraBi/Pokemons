@@ -54,7 +54,7 @@ const ModalDetailsPokemon: FC<ModalDetailsPokemonProps> = ({
       <div className="size-full flex flex-col justify-between items-center gap-2 xl:flex-row xl:gap-10">
         <img
           className={`w-50 h-75 self-center sm:size-70 xl:size-74 ${
-            pokemonInfo.imageUrl === "src/UI/icons/pikachu.jpg"
+            pokemonInfo.imageUrl === "/src/UI/icons/pikachu.jpg"
               ? "rounded-2xl shadow-md"
               : ""
           }`}

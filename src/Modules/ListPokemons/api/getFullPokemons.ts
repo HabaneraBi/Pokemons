@@ -66,7 +66,7 @@ async function getFullPokemonsInfo(arr: InfoFromRequestGroupCards[]) {
         fullInfo.sprites.other.dream_world.front_default ??
         fullInfo.sprites.front_default ??
         fullInfo.sprites.other.home.front_default ??
-        "src/UI/icons/pikachu.jpg";
+        "/src/UI/icons/pikachu.jpg";
 
       return {
         name: pokemon.name,
