@@ -15,28 +15,41 @@ const HomePokemonCard: FC<HomePokemonCardProps> = ({
   saveCards,
   setSaveCards,
 }) => {
-  const deleteCardHandler = () => {
-    const newSaveCards = saveCards.filter((saveCard) => {
+  const filterForDeleting = (cards: MainPokemonInfo[]) => {
+    return cards.filter((saveCard) => {
       if (saveCard.name !== pokemon.name) {
         return saveCard;
       }
     });
-    if (newSaveCards.length) {
-      localStorage.setItem("catchPokemonsInfo", JSON.stringify(newSaveCards));
+  };
+
+  const deleteCardHandler = () => {
+    const newSaveCards = filterForDeleting(saveCards);
+    setSaveCards(newSaveCards);
+
+    const storageSaveCards = JSON.parse(
+      localStorage.getItem("catchPokemonsInfo")!
+    ) as MainPokemonInfo[];
+    const newStorageSaveCards = filterForDeleting(storageSaveCards);
+
+    if (newStorageSaveCards.length) {
+      localStorage.setItem(
+        "catchPokemonsInfo",
+        JSON.stringify(newStorageSaveCards)
+      );
     } else {
       localStorage.removeItem("catchPokemonsInfo");
     }
-    setSaveCards(newSaveCards);
   };
 
   return (
     <div
-      className="flex flex-col gap-4 w-full h-100 p-3 justify-around scale-100 
+      className="flex flex-col gap-4 w-full p-3 justify-around scale-100 
       transition-transform duration-75 ease-in items-center bg-[#E6E6E6] 
       rounded-2xl hover:scale-102
-    sm:grid sm:gap-0 sm:grid-cols-[0.7fr_1.6fr_0.7fr] sm:justify-between 
-    sm:px-6 sm:h-60
-    "
+    sm:grid sm:gap-0 sm:grid-cols-[0.5fr_2fr_0.5fr] sm:justify-between 
+    sm:px-6 sm:h-auto
+    lg:grid-cols-[0.5fr_1fr_1fr_0.5fr_1fr]"
     >
       <img
         className={`w-40 h-40 max-w-full ${
@@ -50,34 +63,57 @@ const HomePokemonCard: FC<HomePokemonCardProps> = ({
 
       <div
         className="flex flex-col items-center gap-4 w-full
-      sm:gap-2 sm:justify-around sm:h-full lg:flex-row lg:gap-12"
+      sm:gap-6 sm:justify-center lg:hidden"
       >
-        <Heading className="text-2xl xl:w-60">{pokemon.name}</Heading>
-        <Paragraph className="w-3/4 px-6 lg:w-60 2xl:text-xl 2xl:w-70">
+        <Heading className="text-2xl">{pokemon.name}</Heading>
+        <Paragraph className="w-3/4 px-6">
           {pokemon.abilities?.join(", ")}
         </Paragraph>
         <div
-          className="flex justify-around w-full
-        sm:justify-evenly gap-1 lg:flex-col lg:h-full lg:w-1/2"
+          className="flex justify-around w-full text-center
+        sm:justify-evenly"
         >
-          <p className="text-center text-[15px] sm:text-lg lg:whitespace-nowrap">
-            Height: {pokemon.height}
-          </p>
-          <p className="text-center text-[15px] sm:text-lg lg:whitespace-nowrap">
-            Weight: {pokemon.weight}
-          </p>
-          <p className="text-center text-[15px] sm:text-lg lg:whitespace-nowrap">
-            Speed: {pokemon.speed}
-          </p>
+          <p className="mx-1">Height: {pokemon.height}</p>
+          <p className="mx-1">Weight: {pokemon.weight}</p>
+          <p className="mx-1">Speed: {pokemon.speed}</p>
         </div>
       </div>
+
+      <div
+        className="hidden lg:flex lg:flex-row lg:items-center lg:w-full
+      lg:gap-2 lg:justify-normal lg:px-10"
+      >
+        <Heading className="text-2xl xl:text-3xl 2xl:text-3xl">
+          {pokemon.name}
+        </Heading>
+      </div>
+
+      <div className="hidden lg:flex lg:flex-row lg:justify-center">
+        <Paragraph
+          className="w-3/4 px-6 lg:text-xl xl:text-2xl
+        2xl:text-2xl"
+        >
+          {pokemon.abilities?.join(", ")}
+        </Paragraph>
+      </div>
+
+      <div
+        className="hidden lg:text-lg lg:flex lg:flex-col lg:w-full lg:p-0 lg:gap-2
+        xl:text-xl xl:gap-4
+        2xl:text-2xl 2xl:gap-5"
+      >
+        <p>Height: {pokemon.height}</p>
+        <p>Weight: {pokemon.weight}</p>
+        <p>Speed: {pokemon.speed}</p>
+      </div>
+
       <div
         className="flex w-full px-10 justify-center
       sm:px-0 sm:w-auto lg:justify-end"
       >
         <Button
+          className="w-60 p-2 sm:w-30 lg:w-2/3 xl:text-xl 2xl:text-2xl"
           onClick={deleteCardHandler}
-          className="w-60 p-2 sm:w-30 lg:w-2/3 xl:text-xl"
         >
           Remove
         </Button>

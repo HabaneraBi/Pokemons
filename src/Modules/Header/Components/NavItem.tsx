@@ -1,36 +1,31 @@
-import { useContext, type FC, type PropsWithChildren } from "react";
+import type { FC, PropsWithChildren } from "react";
 import { globalContext } from "../../../App/App";
+import { useContext } from "react";
 
 interface NavItemProps {
-  clickChangeTab: () => void;
   isActive: boolean;
 }
 
 const NavItem: FC<PropsWithChildren<NavItemProps>> = ({
-  clickChangeTab,
   isActive,
   children,
 }) => {
   const context = useContext(globalContext);
 
-  const handleMouseEnter = () => {
+  const clickHandler = () => {
+    const scrollPosition = JSON.stringify(document.documentElement.scrollTop);
     if (context.openTab === "home") {
-      sessionStorage.setItem(
-        "homeScrollPosition",
-        JSON.stringify(document.documentElement.scrollTop)
-      );
+      sessionStorage.setItem("homeScrollPosition", scrollPosition);
+      context.setOpenTab("pokemons");
     } else {
-      sessionStorage.setItem(
-        "pokemonsScrollPosition",
-        JSON.stringify(document.documentElement.scrollTop)
-      );
+      sessionStorage.setItem("pokemonsScrollPosition", scrollPosition);
+      context.setOpenTab("home");
     }
   };
 
   return (
     <li
-      onMouseEnter={handleMouseEnter}
-      onClick={clickChangeTab}
+      onClick={clickHandler}
       className={`text-xl ${
         isActive && "text-[#3478ff]"
       } cursor-pointer transition-colors duration-300 ease-in-out hover:text-[#5B91FD] xl:text-[22px]`}
