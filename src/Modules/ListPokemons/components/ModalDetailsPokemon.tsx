@@ -22,7 +22,6 @@ const ModalDetailsPokemon: FC<ModalDetailsPokemonProps> = ({
   setCatched,
 }) => {
   const [modalInfo, setModalInfo] = useState<AllPokemonInfo>(pokemonInfo);
-  console.log("rerender from modal");
 
   useEffect(() => {
     if (openModalDetails) {

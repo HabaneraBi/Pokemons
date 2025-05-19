@@ -15,18 +15,8 @@ const Header: FC = () => {
       />
       <SearchBox />
       <ul className="flex w-3/4 justify-between sm:w-60 xl:mr-25 2xl:mr-40">
-        <NavItem
-          isActive={context.openTab === "home"}
-          clickChangeTab={() => context.setOpenTab("home")}
-        >
-          HOME
-        </NavItem>
-        <NavItem
-          isActive={context.openTab === "pokemons"}
-          clickChangeTab={() => context.setOpenTab("pokemons")}
-        >
-          POKEMONS
-        </NavItem>
+        <NavItem isActive={context.openTab === "home"}>HOME</NavItem>
+        <NavItem isActive={context.openTab === "pokemons"}>POKEMONS</NavItem>
       </ul>
     </header>
   );

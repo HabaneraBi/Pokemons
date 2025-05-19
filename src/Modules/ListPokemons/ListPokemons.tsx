@@ -1,7 +1,6 @@
 import type { FC } from "react";
 import {
   getFullPokemonsInfo,
-  getCountAllPokemons,
   getFullPokemonsInfoAlternative,
 } from "./api/getFullPokemons";
 import { useState, useEffect, useContext } from "react";
@@ -12,17 +11,27 @@ import { globalContext } from "../../App/App";
 const ListPokemons: FC = () => {
   const [allPokemons, setAllPokemons] = useState<MainPokemonInfo[]>([]);
   const [loading, setLoading] = useState(false);
-  const [stopCount, setStopCount] = useState(0);
   const [allowSaveScroll, setAllowSaveScroll] = useState(true);
+  const [emtyResults, setEmptyResults] = useState("Loading...");
   const context = useContext(globalContext);
 
   function filterPokemons() {
     const searchInfo = context.allPokemonsNames.filter((pokemon) =>
       pokemon.name.startsWith(context.searchText)
     );
-    getFullPokemonsInfoAlternative(searchInfo).then((info) =>
-      setAllPokemons(info)
-    );
+    getFullPokemonsInfoAlternative(searchInfo).then((info) => {
+      setAllPokemons(info);
+      setEmptyResults("not found :(");
+    });
+  }
+
+  function getStorageCards(): MainPokemonInfo[] {
+    const storage = JSON.parse(sessionStorage.getItem("mainInfoForCard")!);
+    if (storage) {
+      return storage;
+    } else {
+      return [];
+    }
   }
 
   useEffect(() => {
@@ -33,15 +42,6 @@ const ListPokemons: FC = () => {
       setAllPokemons(getStorageCards());
     }
   }, [context.searchText]);
-
-  function getStorageCards(): MainPokemonInfo[] {
-    const storage = JSON.parse(sessionStorage.getItem("mainInfoForCard")!);
-    if (storage) {
-      return storage;
-    } else {
-      return [];
-    }
-  }
 
   useEffect(() => {
     if (sessionStorage.getItem("pokemonsScrollPosition")) {
@@ -56,7 +56,6 @@ const ListPokemons: FC = () => {
   }, [allPokemons]);
 
   useEffect(() => {
-    getCountAllPokemons().then((count) => setStopCount(count));
     if (getStorageCards().length) {
       setAllPokemons(getStorageCards());
     } else {
@@ -95,7 +94,7 @@ const ListPokemons: FC = () => {
 
     if (
       !loading &&
-      stopCount != getStorageCards().length &&
+      context.stopCount != getStorageCards().length &&
       scrollTop + clientHeight >= scrollHeight * 0.7 &&
       context.searchText === ""
     ) {
@@ -112,7 +111,7 @@ const ListPokemons: FC = () => {
           })}
         </div>
       ) : (
-        <div className="relative top-50 text-2xl">Loading...</div>
+        <div className="relative top-50 text-2xl">{emtyResults}</div>
       )}
     </>
   );
