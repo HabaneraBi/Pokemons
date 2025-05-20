@@ -1,14 +1,21 @@
-import { useContext, type ChangeEvent } from "react";
-import { globalContext } from "../../../App/App";
-import loupe from "/src/UI/icons/loupe.svg";
+import { useContext, useEffect, useState, type ChangeEvent } from "react";
+import { globalContext } from "../../../App/context";
+import loupe from "/src/UI/assets/icons/loupe.svg";
 
-const SearchBox = () => {
+export const SearchBox = () => {
   const context = useContext(globalContext);
+  const [inputVal, setInputVal] = useState("");
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      context.setSearchText(inputVal);
+    }, 750);
+
+    return () => clearTimeout(timeout);
+  }, [inputVal]);
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setTimeout(() => {
-      context.setSearchText(event.target.value.toLowerCase());
-    }, 750);
+    setInputVal(event.target.value.toLowerCase());
   };
 
   return (
@@ -25,5 +32,3 @@ const SearchBox = () => {
     </div>
   );
 };
-
-export { SearchBox };

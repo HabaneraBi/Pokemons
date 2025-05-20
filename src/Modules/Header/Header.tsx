@@ -1,11 +1,10 @@
-import type { FC } from "react";
 import { NavItem } from "./Components/NavItem";
 import { useContext } from "react";
-import { globalContext } from "../../App/App";
+import { globalContext } from "../../App/context";
 import { SearchBox } from "./Components/SearchBox";
-import logo from "/src/UI/icons/logoPokemon.svg";
+import logo from "/src/UI/assets/icons/logoPokemon.svg";
 
-const Header: FC = () => {
+export const Header = () => {
   const context = useContext(globalContext);
 
   return (
@@ -19,5 +18,3 @@ const Header: FC = () => {
     </header>
   );
 };
-
-export { Header };

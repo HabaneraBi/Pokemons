@@ -1,11 +1,17 @@
-import type React from "react";
+import type { Dispatch, SetStateAction } from "react";
 
-interface GlobalContext {
-  openTab: "home" | "pokemons";
-  setOpenTab: React.Dispatch<React.SetStateAction<"home" | "pokemons">>;
+export type TabPokemons = "home" | "pokemons";
+
+export type PokemonName = {
+  name: string;
+  url: string;
+};
+
+export type GlobalContext = {
+  openTab: TabPokemons;
+  setOpenTab: Dispatch<SetStateAction<TabPokemons>>;
   searchText: string;
-  setSearchText: React.Dispatch<React.SetStateAction<string>>;
-  allPokemonsNames: { name: string; url: string }[];
+  setSearchText: Dispatch<SetStateAction<string>>;
+  allPokemonsNames: PokemonName[];
   stopCount: number;
-}
-export type { GlobalContext };
+};

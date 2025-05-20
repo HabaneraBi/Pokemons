@@ -6,9 +6,9 @@ import { Button } from "../../../Components/Button";
 import { createPortal } from "react-dom";
 import { ModalDetailsPokemon } from "./ModalDetailsPokemon";
 import { getArrFromStorage, catchPokemonHandler } from "../functions/functions";
-import pikachu from "/src/UI/icons/pikachu.jpg";
+import pikachu from "/src/UI/assets/icons/pikachu.jpg";
 
-const CardPokemon: FC<MainPokemonInfo> = memo((pokemon) => {
+export const CardPokemon: FC<MainPokemonInfo> = memo((pokemon) => {
   const [catched, setCatched] = useState(false);
   const [openModalDetails, setOpenModalDetails] = useState(false);
 
@@ -27,25 +27,19 @@ const CardPokemon: FC<MainPokemonInfo> = memo((pokemon) => {
     setOpenModalDetails(true);
   }
 
+  const isNoneUrl = pokemon.imageUrl === pikachu;
+
   return (
     <>
       <div className="flex flex-col w-full py-3 h-100 justify-around scale-100 transition-transform duration-75 ease-in items-center bg-[#E6E6E6] rounded-2xl hover:scale-102">
         <img
           className={`${
-            pokemon.imageUrl === "/src/UI/icons/pikachu.jpg"
-              ? "w-30 h-3/10 rounded-2xl shadow-md"
-              : "w-40 h-2/5"
+            isNoneUrl ? "w-30 h-3/10 rounded-2xl shadow-md" : "w-40 h-2/5"
           }`}
-          src={
-            pokemon.imageUrl === "/src/UI/icons/pikachu.jpg"
-              ? pikachu
-              : pokemon.imageUrl
-          }
+          src={isNoneUrl ? pikachu : pokemon.imageUrl}
           alt={`image - ${pokemon.name}`}
         />
-        {pokemon.imageUrl === "/src/UI/icons/pikachu.jpg" ? (
-          <p className="text-xl">No picture :{`(`}</p>
-        ) : null}
+        {isNoneUrl ? <p className="text-xl">No picture :{`(`}</p> : null}
 
         <Heading className="text-2xl text-center">{pokemon.name}</Heading>
         <Paragraph className="w-3/4">{pokemon.abilities?.join(", ")}</Paragraph>
@@ -67,20 +61,17 @@ const CardPokemon: FC<MainPokemonInfo> = memo((pokemon) => {
         </div>
       </div>
 
-      {openModalDetails
-        ? createPortal(
-            <ModalDetailsPokemon
-              pokemonInfo={pokemon}
-              setOpenModalDetails={setOpenModalDetails}
-              openModalDetails={openModalDetails}
-              catched={catched}
-              setCatched={setCatched}
-            />,
-            document.body
-          )
-        : null}
+      {openModalDetails &&
+        createPortal(
+          <ModalDetailsPokemon
+            pokemonInfo={pokemon}
+            setOpenModalDetails={setOpenModalDetails}
+            openModalDetails={openModalDetails}
+            catched={catched}
+            setCatched={setCatched}
+          />,
+          document.body
+        )}
     </>
   );
 });
-
-export { CardPokemon };

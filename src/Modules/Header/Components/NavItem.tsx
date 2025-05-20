@@ -1,12 +1,12 @@
 import type { FC, PropsWithChildren } from "react";
-import { globalContext } from "../../../App/App";
+import { globalContext } from "../../../App/context";
 import { useContext } from "react";
 
-interface NavItemProps {
+type NavItemProps = {
   isActive: boolean;
-}
+};
 
-const NavItem: FC<PropsWithChildren<NavItemProps>> = ({
+export const NavItem: FC<PropsWithChildren<NavItemProps>> = ({
   isActive,
   children,
 }) => {
@@ -17,10 +17,11 @@ const NavItem: FC<PropsWithChildren<NavItemProps>> = ({
     if (context.openTab === "home") {
       sessionStorage.setItem("homeScrollPosition", scrollPosition);
       context.setOpenTab("pokemons");
-    } else {
-      sessionStorage.setItem("pokemonsScrollPosition", scrollPosition);
-      context.setOpenTab("home");
+      return;
     }
+
+    sessionStorage.setItem("pokemonsScrollPosition", scrollPosition);
+    context.setOpenTab("home");
   };
 
   return (
@@ -41,5 +42,3 @@ const NavItem: FC<PropsWithChildren<NavItemProps>> = ({
     </li>
   );
 };
-
-export { NavItem };

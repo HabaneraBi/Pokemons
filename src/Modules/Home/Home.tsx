@@ -1,27 +1,32 @@
-import { type FC, useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect } from "react";
 import { HomePokemonCard } from "./components/HomePokemonCard";
-import "../../index.css";
 import type { MainPokemonInfo } from "../../UI/types/types";
-import { globalContext } from "../../App/App";
-import pikachu from "/src/UI/icons/pikachu.jpg";
+import { globalContext } from "../../App/context";
+import pikachu from "/src/UI/assets/icons/pikachu.jpg";
 
-const Home: FC = () => {
-  const context = useContext(globalContext);
-  function getStorageCards(): MainPokemonInfo[] {
+const getStorageCards = (): MainPokemonInfo[] => {
+  try {
     const cards = localStorage.getItem("catchPokemonsInfo");
     return cards ? JSON.parse(cards) : [];
+  } catch (e) {
+    console.error("Error reading from localStorage:", e);
+    return [];
   }
+};
+
+export const Home = () => {
+  const context = useContext(globalContext);
 
   const [saveCards, setSaveCards] = useState<MainPokemonInfo[]>(
     getStorageCards()
   );
 
   useEffect(() => {
-    const scrollStorage: null | string =
-      sessionStorage.getItem("homeScrollPosition");
-    if (scrollStorage) {
-      const scrollPosition: number = JSON.parse(scrollStorage);
-      window.scrollTo(0, scrollPosition);
+    try {
+      const scrollStorage = sessionStorage.getItem("homeScrollPosition");
+      window.scrollTo(0, scrollStorage ? JSON.parse(scrollStorage) : 0);
+    } catch (e) {
+      console.error("Error reading from sessionStorage:", e);
     }
   }, []);
 
@@ -63,5 +68,3 @@ const Home: FC = () => {
     </>
   );
 };
-
-export { Home };

@@ -1,21 +1,25 @@
 import type { MainPokemonInfo } from "../../../UI/types/types";
+import type { Dispatch, SetStateAction } from "react";
 
-const getArrFromStorage = () => {
-  const arrCatchPokemonsStorage: null | string =
-    localStorage.getItem("catchPokemonsInfo");
-  if (arrCatchPokemonsStorage) {
-    return JSON.parse(arrCatchPokemonsStorage) as MainPokemonInfo[];
+export const getArrFromStorage = (): MainPokemonInfo[] => {
+  try {
+    const arrCatchPokemonsStorage = localStorage.getItem("catchPokemonsInfo");
+
+    return arrCatchPokemonsStorage ? JSON.parse(arrCatchPokemonsStorage) : [];
+  } catch (e) {
+    console.error("Error reading from localStorage:", e);
+    return [];
   }
 };
 
-function catchPokemonHandler(
+export function catchPokemonHandler(
   catched: boolean,
   pokemon: MainPokemonInfo,
-  setCatched: (catched: boolean) => void
+  setCatched: Dispatch<SetStateAction<boolean>>
 ) {
   const arrCatchPokemons = getArrFromStorage();
   if (!catched) {
-    if (arrCatchPokemons) {
+    if (arrCatchPokemons.length) {
       localStorage.setItem(
         "catchPokemonsInfo",
         JSON.stringify([...arrCatchPokemons, pokemon])
@@ -25,13 +29,9 @@ function catchPokemonHandler(
     }
     setCatched(true);
   } else {
-    if (arrCatchPokemons) {
+    if (arrCatchPokemons.length) {
       const newStorage: [] | MainPokemonInfo[] = arrCatchPokemons.filter(
-        (pokemonStorage) => {
-          if (pokemonStorage.name !== pokemon.name) {
-            return pokemonStorage;
-          }
-        }
+        (pokemonStorage) => pokemonStorage.name !== pokemon.name
       );
 
       if (newStorage.length) {
@@ -43,5 +43,3 @@ function catchPokemonHandler(
     setCatched(false);
   }
 }
-
-export { getArrFromStorage, catchPokemonHandler };

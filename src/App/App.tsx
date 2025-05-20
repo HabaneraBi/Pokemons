@@ -1,32 +1,25 @@
-import type { FC } from "react";
-import type { GlobalContext } from "./types";
 import { Header } from "../Modules/Header/Header";
-import { useState, createContext, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Pokemons } from "../Pages/PokemonsPage/PokemonsPage";
 import { HomePage } from "../Pages/HomePage/HomePage";
 import {
   getAllPokemonsNames,
   getCountAllPokemons,
 } from "../Modules/ListPokemons/api/getFullPokemons";
+import { globalContext } from "./context";
+import type { TabPokemons, PokemonName } from "./types";
 
-const globalContext = createContext<GlobalContext>({
-  openTab: "home",
-  setOpenTab: () => "",
-  searchText: "",
-  setSearchText: () => "",
-  allPokemonsNames: [],
-  stopCount: 0,
-});
+enum Pages {
+  HOME = "home",
+  POKEMONS = "pokemons",
+}
 
-const PAGES = ["home", "pokemons"] as const;
-type pages = (typeof PAGES)[number];
+const PAGES = Object.values(Pages);
 
-const App: FC = () => {
-  const [openTab, setOpenTab] = useState<"home" | "pokemons">("home");
-  const [searchText, setSearchText] = useState<string>("");
-  const [allPokemonsNames, setAllPokemonsNames] = useState<
-    { name: string; url: string }[]
-  >([]);
+export const App = () => {
+  const [openTab, setOpenTab] = useState<TabPokemons>("home");
+  const [searchText, setSearchText] = useState("");
+  const [allPokemonsNames, setAllPokemonsNames] = useState<PokemonName[]>([]);
   const [stopCount, setStopCount] = useState<number>(0);
 
   useEffect(() => {
@@ -34,12 +27,13 @@ const App: FC = () => {
     if (
       sessionPage &&
       openTab !== sessionPage &&
-      PAGES.includes(sessionPage as pages)
+      PAGES.includes(sessionPage as Pages)
     ) {
-      setOpenTab(sessionPage as pages);
+      setOpenTab(sessionPage as TabPokemons);
     } else {
       sessionStorage.setItem("page", openTab);
     }
+
     getAllPokemonsNames().then((data) => setAllPokemonsNames(data));
     getCountAllPokemons().then((count) => setStopCount(count));
   }, []);
@@ -64,5 +58,3 @@ const App: FC = () => {
     </globalContext.Provider>
   );
 };
-
-export { App, globalContext };

@@ -3,15 +3,15 @@ import { Paragraph } from "../../../Components/Paragraph";
 import { Heading } from "../../../Components/Heading";
 import type { MainPokemonInfo } from "../../../UI/types/types";
 import { type FC } from "react";
-import pikachu from "/src/UI/icons/pikachu.jpg";
+import pikachu from "/src/UI/assets/icons/pikachu.jpg";
 
-interface HomePokemonCardProps {
+type HomePokemonCardProps = {
   pokemon: MainPokemonInfo;
   saveCards: MainPokemonInfo[];
   setSaveCards: (arr: MainPokemonInfo[]) => void;
-}
+};
 
-const HomePokemonCard: FC<HomePokemonCardProps> = ({
+export const HomePokemonCard: FC<HomePokemonCardProps> = ({
   pokemon,
   saveCards,
   setSaveCards,
@@ -126,5 +126,3 @@ const HomePokemonCard: FC<HomePokemonCardProps> = ({
     </div>
   );
 };
-
-export { HomePokemonCard };

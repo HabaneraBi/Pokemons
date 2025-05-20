@@ -1,21 +1,13 @@
 import { type FC, useEffect, useState, useRef } from "react";
 import { Heading } from "../../../Components/Heading";
 import { Button } from "../../../Components/Button";
-import type { Dispatch, SetStateAction } from "react";
+import type { ModalDetailsPokemonProps } from "./types";
 import { getModalInfo } from "../api/getFullPokemons";
-import type { AllPokemonInfo, MainPokemonInfo } from "../../../UI/types/types";
+import type { AllPokemonInfo } from "../../../UI/types/types";
 import { catchPokemonHandler } from "../functions/functions";
-import pikachu from "/src/UI/icons/pikachu.jpg";
+import pikachu from "/src/UI/assets/icons/pikachu.jpg";
 
-interface ModalDetailsPokemonProps {
-  setOpenModalDetails: Dispatch<SetStateAction<boolean>>;
-  openModalDetails: boolean;
-  pokemonInfo: MainPokemonInfo;
-  catched: boolean;
-  setCatched: (catched: boolean) => void;
-}
-
-const ModalDetailsPokemon: FC<ModalDetailsPokemonProps> = ({
+export const ModalDetailsPokemon: FC<ModalDetailsPokemonProps> = ({
   setOpenModalDetails,
   openModalDetails,
   pokemonInfo,
@@ -82,7 +74,10 @@ const ModalDetailsPokemon: FC<ModalDetailsPokemonProps> = ({
             </p>
           </div>
           <p className="text-lg mt-4 w-full text-center">
-            Moves: {modalInfo.moves?.join(", ")}
+            Moves:{" "}
+            {typeof modalInfo.moves === "string"
+              ? modalInfo.moves
+              : modalInfo.moves?.join(", ")}
           </p>
 
           <div className="flex w-full justify-around mt-4 mb-4 md:mt-8">
@@ -106,5 +101,3 @@ const ModalDetailsPokemon: FC<ModalDetailsPokemonProps> = ({
     </dialog>
   );
 };
-
-export { ModalDetailsPokemon };

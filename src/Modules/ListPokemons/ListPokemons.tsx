@@ -1,4 +1,3 @@
-import type { FC } from "react";
 import {
   getFullPackageInfo,
   getFullForFilterInfo,
@@ -6,9 +5,19 @@ import {
 import { useState, useEffect, useContext } from "react";
 import type { MainPokemonInfo } from "../../UI/types/types";
 import { CardPokemon } from "./components/CardPokemon";
-import { globalContext } from "../../App/App";
+import { globalContext } from "../../App/context";
 
-const ListPokemons: FC = () => {
+const getStorageCards = (): MainPokemonInfo[] => {
+  try {
+    const cards = sessionStorage.getItem("mainInfoForCard");
+    return cards ? JSON.parse(cards) : [];
+  } catch (e) {
+    console.log("Error reading from sessionStorage:", e);
+    return [];
+  }
+};
+
+export const ListPokemons = () => {
   const [allPokemons, setAllPokemons] = useState<MainPokemonInfo[]>([]);
   const [loading, setLoading] = useState(false);
   const [allowSaveScroll, setAllowSaveScroll] = useState(true);
@@ -23,15 +32,6 @@ const ListPokemons: FC = () => {
       setAllPokemons(info);
       setEmptyResults("not found :(");
     });
-  }
-
-  function getStorageCards(): MainPokemonInfo[] {
-    const storage = JSON.parse(sessionStorage.getItem("mainInfoForCard")!);
-    if (storage) {
-      return storage;
-    } else {
-      return [];
-    }
   }
 
   useEffect(() => {
@@ -119,5 +119,3 @@ const ListPokemons: FC = () => {
     </>
   );
 };
-
-export { ListPokemons };
