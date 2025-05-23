@@ -20,7 +20,7 @@ export const App = () => {
   const [openTab, setOpenTab] = useState<TabPokemons>("home");
   const [searchText, setSearchText] = useState("");
   const [allPokemonsNames, setAllPokemonsNames] = useState<PokemonName[]>([]);
-  const [stopCount, setStopCount] = useState<number>(0);
+  const [stopCount, setStopCount] = useState(0);
 
   useEffect(() => {
     const sessionPage = sessionStorage.getItem("page");
